@@ -1,7 +1,8 @@
 # A simple chat app with golang and react.js
 
 * `Tutorial`: https://reactjsexample.com/a-simple-chat-app-with-websocket-golang-and-react-js
-* `Repo`: https://github.com/nekonako/moechat/tree/master/mashu
+* `Repo`: https://github.com/nekonako/moechat
+* `Repo (mashu)`: https://github.com/nekonako/moechat/tree/master/mashu
 
 ### structure
 
@@ -30,6 +31,10 @@
 > npm run-script build
 > yarn start
 ```
+
+![Screenshot-2.png](screenshot_2.png)
+
+![Screenshot-3.png](screenshot_3.png)
 
 ![Screenshot-1.png](screenshot_1.png)
 

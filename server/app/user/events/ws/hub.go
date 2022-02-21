@@ -53,7 +53,7 @@ func (h *Hub) Run() {
 					if client.RoomId == message.RoomId {
 						client.Message <- message // TODO: Message, ClientId, RoomId, Username
 						//fmt.Println(message)
-						fmt.Println("(" + message.RoomId + ") User=" + message.Username + "  |  Message='" + message.Message + "'")
+						fmt.Println("Send >>> (" + message.RoomId + ") User=" + message.Username + "  |  Message='" + message.Message + "'")
 					}
 				}
 

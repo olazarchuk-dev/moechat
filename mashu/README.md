@@ -17,8 +17,9 @@
 
 ### tech stack
 + **Front End**
-  - React Js
-  - Next Js
+  - Node.js 12.0+
+  - React.Js
+  - Next.Js
   - Tailwind Css
 + **Other**
   - docker

@@ -17,7 +17,7 @@
 
 ### tech stack
 + **Back End**
-  - Golang
+  - Golang 1.13+
   - Fiber
   - Postgre SQL
   - Websocket

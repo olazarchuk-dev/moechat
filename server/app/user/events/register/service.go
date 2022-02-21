@@ -21,7 +21,7 @@ func Service(db *sql.DB, ctx context.Context, request api.RegisterRequest) *api.
 	bytes, errHash := bcrypt.GenerateFromPassword([]byte(request.Password), 10)
 	helper.PanicErr(errHash)
 
-	user := entity.User{
+	user := entity.Users{
 		Username: request.Username,
 		Password: string(bytes),
 		Email:    request.Email,
@@ -38,7 +38,7 @@ func Service(db *sql.DB, ctx context.Context, request api.RegisterRequest) *api.
 			baseResponse = api.BaseResponse{
 				Success: false,
 				Code:    400,
-				Message: "User was registered",
+				Message: "Users was registered",
 			}
 
 			return &api.RegisterResponse{

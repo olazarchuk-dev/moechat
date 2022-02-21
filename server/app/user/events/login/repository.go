@@ -10,7 +10,7 @@ import (
 	"github.com/nekonako/moechat/model/entity"
 )
 
-func Repository(ctx context.Context, tx *sql.Tx, username string) (*entity.User, error) {
+func Repository(ctx context.Context, tx *sql.Tx, username string) (*entity.Users, error) {
 
 	//	fmt.Println(username)
 	query := "SELECT * FROM users WHERE username = $1"
@@ -18,14 +18,14 @@ func Repository(ctx context.Context, tx *sql.Tx, username string) (*entity.User,
 
 	helper.PanicErr(err)
 
-	var user entity.User
+	var user entity.Users
 
 	defer rows.Close()
 	for rows.Next() {
 		err := rows.Scan(&user.Id, &user.Username, &user.Password, &user.Email, &user.Image)
 		if err != nil {
 			fmt.Println(err)
-			return new(entity.User), err
+			return new(entity.Users), err
 		}
 		log.Print(user)
 	}

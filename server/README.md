@@ -14,8 +14,6 @@
 
 ##### Welcome to Futa
 
-![moechat.png](moechat.png)
-
 ### tech stack
 + **Back End**
   - Golang 1.13+
@@ -32,6 +30,8 @@
 > go build main.go
 ```
 
+![Screenshot-3](screenshot_6.png)
+
 ![Screenshot-1](screenshot_1.png)
 
 ![Screenshot-5](screenshot_5.png)
@@ -39,7 +39,3 @@
 ![Screenshot-4](screenshot_4.png)
 
 ![Screenshot-3](screenshot_3.png)
-
-
-
-

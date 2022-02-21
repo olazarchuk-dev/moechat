@@ -42,7 +42,8 @@
 
 ---
 
-* [Next.js — Подробное руководство](https://habr.com/ru/company/timeweb/blog/588498)
+* [Next.js — Подробное руководство 1](https://habr.com/ru/company/timeweb/blog/588498)
+* [Next.js — Подробное руководство 2](https://habr.com/ru/company/timeweb/blog/590157)
 * [Next.js — Краткое руководство 1](https://pxstudio.pw/blog/chto-takoe-next-js-i-dlya-chego-on-nuzhen)
 * [Next.js — Краткое руководство 2](https://pxstudio.pw/blog/poluchenie-dannyh-v-next-js)
 * [Next.js — Краткое руководство 3.1](https://nextjs.org/docs)

@@ -51,7 +51,9 @@ func (h *Hub) Run() {
 			if _, exist := h.Rooms[message.RoomId]; exist {
 				for _, client := range h.Rooms[message.RoomId].Clients {
 					if client.RoomId == message.RoomId {
-						client.Message <- message
+						client.Message <- message // TODO: Message, ClientId, RoomId, Username
+						//fmt.Println(message)
+						fmt.Println("(" + message.RoomId + ") User=" + message.Username + "  |  Message='" + message.Message + "'")
 					}
 				}
 

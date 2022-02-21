@@ -1,5 +1,6 @@
 # A simple chat app with golang and react.js
 
+* `Tutorial`: https://bestofreactjs.com/repo/nekonako-moechat-react-react-apps
 * `Tutorial`: https://reactjsexample.com/a-simple-chat-app-with-websocket-golang-and-react-js
 * `Repo`: https://github.com/nekonako/moechat
 * `Repo (futa)`: https://github.com/nekonako/moechat/tree/master/futa

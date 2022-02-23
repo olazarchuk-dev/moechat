@@ -75,7 +75,7 @@ export default function Index() {
     <>
       <div className="my-8 px-4 md:mx-32 h-full w-full">
         <div className="flex justify-center">
-          <div className="p-5 w-96 rounded-md bg-dark-secondary">
+          <div className="w-96 rounded-md bg-dark-secondary">
             <div className="mt-3 text-center">
               {message && (
                 <div className="mb-3 bg-red bg-opacity-10 p-2 rounded-md text-red">
@@ -85,20 +85,19 @@ export default function Index() {
               <input
                 type="text"
                 className="p-2 bg-dark-primary border border-green rounded-md focus:outline-none"
-                placeholder="room name"
+                placeholder="username"
                 onChange={onRoomChange}
               />
               <button
                 className="bg-dark-primary mt-4 md:mt-0 border border-green text-green rounded-md p-2 md:ml-4"
-                onClick={submit}
-              >
-                buat room
+                onClick={submit}>
+                join to user
               </button>
             </div>
           </div>
         </div>
         <div className="mt-6">
-          <div className="font-bold">Daftar room</div>
+          <div className="font-bold">List user(s)</div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
             {rooms.map((room, index) => (
               <div
@@ -106,7 +105,7 @@ export default function Index() {
                 className="bg-dark-secondary p-4 flex flex-row rounded-md w-full"
               >
                 <div className="w-full">
-                  <div className="text-sm">room</div>
+                  <div className="text-sm">username</div>
                   <div className="text-yellow font-bold text-lg">
                     {room.roomName}
                   </div>

@@ -14,8 +14,6 @@
 
 ##### Welcome to Mashu
 
-![moechat.png](moechat.png)
-
 ### tech stack
 + **Front End**
   - Node.js 12.0+
@@ -29,24 +27,21 @@
   - vercel for deploy the front end
 
 ```shell script
-> yarn install
+> npm install
 > npm run-script build
 > yarn start
 ```
 
-![Screenshot-2.png](screenshot_2.png)
-
-![Screenshot-3.png](screenshot_3.png)
-
-![Screenshot-1.png](screenshot_1.png)
-
-![Screenshot-4.png](screenshot_4.png)
-
-![Screenshot-5.png](screenshot_5.png)
-
-![Screenshot-6.png](screenshot_6.png)
-
-![Screenshot-7.png](screenshot_7.png)
+1. http://localhost:3000/register
+   ![Screenshot-10](screenshot_10.png)
+2. http://localhost:3000/login
+   ![Screenshot-11](screenshot_11.png)
+3. http://localhost:3000/app
+   ![Screenshot-12](screenshot_12.png)
+   ![Screenshot-13](screenshot_13.png)
+   ![Screenshot-14](screenshot_14.png)
+   ![Screenshot-15](screenshot_15.png)
+   ![Screenshot-16](screenshot_16.png)
 
 
 ---

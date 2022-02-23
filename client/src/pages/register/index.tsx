@@ -74,11 +74,6 @@ export default function Register() {
       <div className="flex items-center justify-center min-w-full min-h-screen">
         <div className="m-4 p-6 place-content-center">
           <form className="flex flex-col py-12 mx-8">
-            <div className="text-3xl font-bold text-center text-red text-gray-700">
-              <span className="text-pink">✿ </span>
-              <span className="text-yellow">Moe</span>Chat
-              <span className="text-pink"> ✿ </span>
-            </div>
             <input
               className="bg-dark-secondary p-3 mt-8  rounded-md focus:outline-none border-2 border-dark-primary focus:border-aqua"
               placeholder="username"

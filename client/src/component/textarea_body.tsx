@@ -1,11 +1,11 @@
 import React from 'react';
 import { Message } from '../types/message';
 
-export default function EditorBody({ data,data2 }): JSX.Element {
-  return data.map((message: Message, index: number) => {
+export default function TextareaBody({ msg,txt }): JSX.Element {
+  return msg.map((message: Message, index: number) => {
 
-      // console.log("[[[ " + objToString(data2.current))
-      data2.current.value = message.message
+      // console.log("[[[ " + objToString(txt.current))
+      txt.current.value = message.message
 
       if (message.type != 'recv') {
           return (

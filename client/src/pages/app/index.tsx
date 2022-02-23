@@ -2,12 +2,11 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import autosize from 'autosize';
 import { WebSocketContext } from '../../modules/websocket_provider';
 import router from 'next/router';
-import ChatBody from '../../component/chat_body';
+import TextareaBody from "../../component/textarea_body";
 import { AuthContext } from '../../modules/auth_provider';
 import { Message } from '../../types/message';
 import { useGetUser } from '../../hooks/use_get_user';
 import Loading from '../../component/loading';
-import EditorBody from "../../component/editor_body";
 
 export default function App() {
   const [messages, setMessages] = useState<Array<Message>>([]);
@@ -60,7 +59,7 @@ export default function App() {
     if (!textarea.current.value) return;
     conn.send(textarea.current.value);
     // textarea.current.value = null;
-    console.log('>>> ' + textarea.current.value.valueOf());
+    // console.log('>>> ' + textarea.current.value.valueOf());
   };
 
   const reconnect = () => {
@@ -74,25 +73,16 @@ export default function App() {
     }
   };
 
-  if (users === [] || conn === null) <Loading />;
+  if (users === [] || conn === null) <Loading></Loading>;
 
   return (
-    <>
       <div className="flex flex-col md:flex-row w-full">
         <div className="flex flex-col w-full md:w-9/12">
           <div className="p-4 md:mx-24 mb-14">
             <div>
-              {/*<ChatBody data={messages} />*/}
-            </div>
-          </div>
-          <div className="fixed bottom-0 md:w-9/12 mt-4 w-full" style={{ overflow: 'hidden' }}>
-
-            <div className="flex md:flex-row bg-dark-secondary px-4 py-2 md:mx-4 rounded-md">
               <div className="flex w-full mr-4 bg-dark-secondary">
                 <textarea
-                    id="noter-text-area"
                   ref={textarea}
-                  placeholder="Hello internet !"
                   className="w-full p-2 h-2 rounded-md bg-dark-primary focus:outline-none"
                   style={{
                     resize: 'none',
@@ -100,7 +90,7 @@ export default function App() {
                   onChange={sendMessage}>
                 </textarea>
               </div>
-              <EditorBody data={messages} data2={textarea} />
+              <TextareaBody msg={messages} txt={textarea} />
             </div>
 
           </div>
@@ -121,7 +111,6 @@ export default function App() {
           </div>
         </div>
       </div>
-    </>
   );
 }
 

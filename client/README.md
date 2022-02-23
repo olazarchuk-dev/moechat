@@ -9,8 +9,8 @@
 
 | Folder      | Description |
 | ----------- | ----------- |
-| Futa        | Golang API  |
-| Mashu       | Next JS     |
+| server      | Golang API  |
+| client      | Next JS     |
 
 ##### Welcome to Mashu
 

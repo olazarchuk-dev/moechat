@@ -91,13 +91,13 @@ export default function Index() {
               <button
                 className="bg-dark-primary mt-4 md:mt-0 border border-green text-green rounded-md p-2 md:ml-4"
                 onClick={submit}>
-                join to user
+                connect
               </button>
             </div>
           </div>
         </div>
         <div className="mt-6">
-          <div className="font-bold">List user(s)</div>
+          <div className="font-bold">join to user</div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
             {rooms.map((room, index) => (
               <div

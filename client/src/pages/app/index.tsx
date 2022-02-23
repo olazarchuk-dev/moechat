@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import autosize from 'autosize';
 import { WebSocketContext } from '../../modules/websocket_provider';
 import router from 'next/router';
@@ -7,6 +7,7 @@ import { AuthContext } from '../../modules/auth_provider';
 import { Message } from '../../types/message';
 import { useGetUser } from '../../hooks/use_get_user';
 import Loading from '../../component/loading';
+import EditorBody from "../../component/editor_body";
 
 export default function App() {
   const [messages, setMessages] = useState<Array<Message>>([]);
@@ -58,7 +59,8 @@ export default function App() {
     console.log(textarea.current.value, 'send');
     if (!textarea.current.value) return;
     conn.send(textarea.current.value);
-    textarea.current.value = null;
+    // textarea.current.value = null;
+    console.log('>>> ' + textarea.current.value.valueOf());
   };
 
   const reconnect = () => {
@@ -80,33 +82,27 @@ export default function App() {
         <div className="flex flex-col w-full md:w-9/12">
           <div className="p-4 md:mx-24 mb-14">
             <div>
-              <ChatBody data={messages} />
+              {/*<ChatBody data={messages} />*/}
             </div>
           </div>
-          <div
-            className="fixed bottom-0 md:w-9/12 mt-4 w-full"
-            style={{ overflow: 'hidden' }}
-          >
+          <div className="fixed bottom-0 md:w-9/12 mt-4 w-full" style={{ overflow: 'hidden' }}>
+
             <div className="flex md:flex-row bg-dark-secondary px-4 py-2 md:mx-4 rounded-md">
               <div className="flex w-full mr-4 bg-dark-secondary">
                 <textarea
+                    id="noter-text-area"
                   ref={textarea}
                   placeholder="Hello internet !"
                   className="w-full p-2 h-2 rounded-md bg-dark-primary focus:outline-none"
                   style={{
                     resize: 'none',
                   }}
-                />
+                  onChange={sendMessage}>
+                </textarea>
               </div>
-              <div className="flex items-center">
-                <button
-                  className="p-2 rounded-md bg-dark-primary text-blue border border-blue"
-                  onClick={sendMessage}
-                >
-                  Send
-                </button>
-              </div>
+              <EditorBody data={messages} data2={textarea} />
             </div>
+
           </div>
         </div>
         <div className="md:w-3/12 md:visible invisible flex flex-col border-l-2 border-dark-secondary p-4">

@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import autosize from 'autosize';
 import { WebSocketContext } from '../../modules/websocket_provider';
 import router from 'next/router';
 import TextareaBody from "../../component/textarea_body";
@@ -18,7 +17,6 @@ export default function App() {
   const { users, setUsers } = useGetUser();
 
   useEffect(() => {
-    autosize(textarea.current);
     console.log(user);
 
     if (conn === null) {
@@ -28,7 +26,7 @@ export default function App() {
 
     conn.onmessage = (message) => {
       const m: Message = JSON.parse(message.data);
-      if (m.message == 'newuser') {
+      if (m.message == 'new_user') {
         setUsers([...users, { username: m.username }]);
         return;
       }
@@ -58,7 +56,6 @@ export default function App() {
     console.log(textarea.current.value, 'send');
     if (!textarea.current.value) return;
     conn.send(textarea.current.value);
-    // textarea.current.value = null;
     // console.log('>>> ' + textarea.current.value.valueOf());
   };
 
@@ -79,19 +76,22 @@ export default function App() {
       <div className="flex flex-col md:flex-row w-full">
         <div className="flex flex-col w-full md:w-9/12">
           <div className="p-4 md:mx-24 mb-14">
-            <div>
-              <div className="flex w-full mr-4 bg-dark-secondary">
-                <textarea
-                  ref={textarea}
-                  className="w-full p-2 h-2 rounded-md bg-dark-primary focus:outline-none"
-                  style={{
-                    resize: 'none',
-                  }}
-                  onChange={sendMessage}>
-                </textarea>
-              </div>
-              <TextareaBody msg={messages} txt={textarea} />
+            <div className="flex w-full mr-4 bg-dark-secondary border border-dark-secondary"
+                 style={{
+                   borderColor: 'green',
+                   borderRadius: '5px'
+                 }}>
+              <textarea
+                ref={textarea}
+                className="w-full p-2 h-2 rounded-md bg-dark-primary focus:outline-none"
+                style={{
+                  backgroundColor: '#312b2b',
+                  height: '850px'
+                }}
+                onChange={sendMessage}>
+              </textarea>
             </div>
+            <TextareaBody msg={messages} txt={textarea} />
 
           </div>
         </div>

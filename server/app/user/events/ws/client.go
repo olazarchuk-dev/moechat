@@ -46,13 +46,13 @@ func (c *Client) ReadMessage(h *Hub) {
 			}
 			break
 		}
-		mesaage := Message{
+		message := Message{
 			Message:  string(m),
 			ClientId: c.ClientId,
 			RoomId:   c.RoomId,
 			Username: c.Username,
 		}
-		h.Broadcast <- &mesaage
+		h.Broadcast <- &message
 	}
 }
 

@@ -1,5 +1,5 @@
 {
-  "name" : "@moechat/mashu",
+  "name": "@moechat/mashu",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -9,6 +9,10 @@
   "dependencies": {
     "autosize": "^5.0.1",
     "axios": "^0.24.0",
+    "create-react-class": "15.6.3",
+    "react": "16.5.2",
+    "react-dom": "16.5.2",
+    "react-range": "^1.8.12",
     "jwt-decode": "^3.1.2",
     "next": "^12.0.2",
     "prop-types": "^15.7.2",

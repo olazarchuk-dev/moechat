@@ -31,14 +31,14 @@ const (
 )
 
 // from webscoket Connections to Hub
-func (c *Client) ReadMessage(h *Hub) {
+func (client *Client) ReadMessage(hub *Hub) {
 	defer func() {
-		h.Unregister <- c
-		c.Conn.Close()
+		hub.Unregister <- client
+		client.Conn.Close()
 	}()
 
 	for {
-		_, m, err := c.Conn.ReadMessage()
+		_, messageTxt, err := client.Conn.ReadMessage()
 		if err != nil {
 			fmt.Println(err)
 			if strings.Contains(err.Error(), "websocket: close") {
@@ -47,27 +47,27 @@ func (c *Client) ReadMessage(h *Hub) {
 			break
 		}
 		message := Message{
-			MessageTxt: string(m),
-			ClientId:   c.ClientId,
-			RoomId:     c.RoomId,
-			Username:   c.Username,
+			MessageTxt: string(messageTxt),
+			ClientId:   client.ClientId,
+			RoomId:     client.RoomId,
+			Username:   client.Username,
 		}
-		h.Broadcast <- &message
+		hub.Broadcast <- &message
 	}
 }
 
 // from Hub to websocket Connection
-func (c *Client) WriteMessage() {
+func (client *Client) WriteMessage() {
 	defer func() {
 		fmt.Println("Connection was closed")
 	}()
 	for {
 		select {
-		case message, ok := <-c.Message:
+		case message, ok := <-client.Message:
 			if !ok {
 				return
 			}
-			c.Conn.WriteJSON(message)
+			client.Conn.WriteJSON(message)
 		}
 	}
 }

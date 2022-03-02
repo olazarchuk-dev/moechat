@@ -2,11 +2,11 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { WebSocketContext } from '../../modules/websocket_provider';
 import router from 'next/router';
 import TextareaBody from "../../component/textarea_body";
+import RangeBody from "../../component/range_body";
 import { AuthContext } from '../../modules/auth_provider';
 import { Message } from '../../types/message';
 import { useGetUser } from '../../hooks/use_get_user';
 import Loading from '../../component/loading';
-import RangeBody from "../../component/range_body";
 
 export default function App() {
   const [messages, setMessages] = useState<Array<Message>>([]);
@@ -27,11 +27,11 @@ export default function App() {
 
     conn.onmessage = (message) => {
       const m: Message = JSON.parse(message.data);
-      if (m.message == 'new_user') {
+      if (m.messageTxt == 'new_user') {
         setUsers([...users, { username: m.username }]);
         return;
       }
-      if (m.message == 'disconnect_user') {
+      if (m.messageTxt == 'disconnect_user') {
         const deleteUser = users.filter((user) => user.username != m.username);
         setUsers([...deleteUser]);
         return;
@@ -54,7 +54,7 @@ export default function App() {
   }, [textarea, messages, conn, users]);
 
   const sendMessage = () => {
-    console.log(textarea.current.value, 'send');
+    console.log('TextareaValue:', textarea.current.value, '>>> send');
     if (!textarea.current.value) return;
     conn.send(textarea.current.value);
     // console.log('>>> ' + textarea.current.value.valueOf());

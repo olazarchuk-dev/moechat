@@ -6,6 +6,8 @@ import { Range } from 'react-range';
 export default class RangeBody extends React.Component {
     state = { values: [0] };
     render() {
+        console.log('StateValues:', this.state.values, '>>> send');
+
         return (
             <>
                 <Range

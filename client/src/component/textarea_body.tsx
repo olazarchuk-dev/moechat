@@ -5,7 +5,7 @@ export default function TextareaBody({ msg,txt }): JSX.Element {
   return msg.map((message: Message, index: number) => {
 
       // console.log("[[[ " + objToString(txt.current))
-      txt.current.value = message.message
+      txt.current.value = message.messageTxt
 
       if (message.type != 'recv') {
           return (

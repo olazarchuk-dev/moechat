@@ -1,5 +1,5 @@
 export type Message = {
-  message: string;
+  messageTxt: string;
   clientId: number;
   username: string;
   roomId: string;

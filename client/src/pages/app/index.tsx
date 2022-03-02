@@ -6,6 +6,7 @@ import { AuthContext } from '../../modules/auth_provider';
 import { Message } from '../../types/message';
 import { useGetUser } from '../../hooks/use_get_user';
 import Loading from '../../component/loading';
+import RangeBody from "../../component/range_body";
 
 export default function App() {
   const [messages, setMessages] = useState<Array<Message>>([]);
@@ -86,12 +87,14 @@ export default function App() {
                 className="w-full p-2 h-2 rounded-md bg-dark-primary focus:outline-none"
                 style={{
                   backgroundColor: '#312b2b',
-                  height: '850px'
+                  height: '780px'
                 }}
                 onChange={sendMessage}>
               </textarea>
             </div>
             <TextareaBody msg={messages} txt={textarea} />
+
+            <br/><br/> <RangeBody />
 
           </div>
         </div>

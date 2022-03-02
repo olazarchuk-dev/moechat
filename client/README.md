@@ -78,3 +78,8 @@
 
 **UDP — обеспечивает более высокую скорость передачи данных.**
 
+
+---
+
+* `React Range Slider`: https://js.devexpress.com/Demos/WidgetsGallery/Demo/Slider/Overview/React/Light
+

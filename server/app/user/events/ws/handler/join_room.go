@@ -8,35 +8,35 @@ import (
 	"github.com/nekonako/moechat/app/user/events/ws"
 )
 
-func JoinRoom(h *ws.Hub) fiber.Handler {
-	return websocket.New(func(c *websocket.Conn) {
+func JoinRoom(hub *ws.Hub) fiber.Handler {
+	return websocket.New(func(conn *websocket.Conn) {
 
-		roomId := c.Params("roomId")
-		clientId := c.Query("userId")
-		username := c.Query("username")
+		roomId := conn.Params("roomId")
+		clientId := conn.Query("userId")
+		username := conn.Query("username")
 
 		fmt.Println(roomId, clientId)
 
 		client := &ws.Client{
 			Username: username,
-			Conn:     c,
+			Conn:     conn,
 			RoomId:   roomId,
 			ClientId: clientId,
 			Message:  make(chan *ws.Message, 10),
 		}
 
-		m := ws.Message{
+		message := ws.Message{
 			Message:  "new_user",
 			ClientId: client.ClientId,
 			RoomId:   client.RoomId,
 			Username: username,
 		}
 
-		h.Register <- client
-		h.Broadcast <- &m
+		hub.Register <- client
+		hub.Broadcast <- &message
 
 		go client.WriteMessage()
-		client.ReadMessage(h)
+		client.ReadMessage(hub)
 
 	})
 }

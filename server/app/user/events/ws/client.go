@@ -47,10 +47,10 @@ func (c *Client) ReadMessage(h *Hub) {
 			break
 		}
 		message := Message{
-			Message:  string(m),
-			ClientId: c.ClientId,
-			RoomId:   c.RoomId,
-			Username: c.Username,
+			MessageTxt: string(m),
+			ClientId:   c.ClientId,
+			RoomId:     c.RoomId,
+			Username:   c.Username,
 		}
 		h.Broadcast <- &message
 	}

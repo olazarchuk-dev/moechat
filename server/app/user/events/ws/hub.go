@@ -31,10 +31,10 @@ func (h *Hub) Run() {
 				fmt.Println("delete connection")
 				if len(h.Rooms[client.RoomId].Clients) != 0 {
 					h.Broadcast <- &Message{
-						Message:  "disconnect_user",
-						ClientId: client.ClientId,
-						RoomId:   client.RoomId,
-						Username: client.Username,
+						MessageTxt: "disconnect_user",
+						ClientId:   client.ClientId,
+						RoomId:     client.RoomId,
+						Username:   client.Username,
 					}
 				}
 				delete(h.Rooms[client.RoomId].Clients, client.ClientId)
@@ -51,9 +51,9 @@ func (h *Hub) Run() {
 			if _, exist := h.Rooms[message.RoomId]; exist {
 				for _, client := range h.Rooms[message.RoomId].Clients {
 					if client.RoomId == message.RoomId {
-						client.Message <- message // TODO: Message, ClientId, RoomId, Username
+						client.Message <- message // TODO: MessageTxt, ClientId, RoomId, Username
 						//fmt.Println(message)
-						fmt.Println("Send >>> (" + message.RoomId + ") User=" + message.Username + "  |  Message='" + message.Message + "'")
+						fmt.Println("Send >>> (User_ID = '" + message.RoomId + "')  Client_ID = '" + message.Username + "'  |  Message_TXT = '" + message.MessageTxt + "'")
 					}
 				}
 

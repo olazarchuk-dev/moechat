@@ -14,22 +14,25 @@ func JoinRoom(hub *ws.Hub) fiber.Handler {
 		roomId := conn.Params("roomId")
 		clientId := conn.Query("userId")
 		username := conn.Query("username")
+		messageState := conn.Query("messageState")
 
 		fmt.Println(roomId, clientId)
 
 		client := &ws.Client{
-			Username: username,
-			Conn:     conn,
-			RoomId:   roomId,
-			ClientId: clientId,
-			Message:  make(chan *ws.Message, 10),
+			Username:     username,
+			Conn:         conn,
+			RoomId:       roomId,
+			ClientId:     clientId,
+			Message:      make(chan *ws.Message, 10),
+			MessageState: messageState,
 		}
 
 		message := ws.Message{
-			MessageTxt: "new_user",
-			ClientId:   client.ClientId,
-			RoomId:     client.RoomId,
-			Username:   username,
+			MessageTxt:   "new_user",
+			MessageState: "0",
+			ClientId:     client.ClientId,
+			RoomId:       client.RoomId,
+			Username:     username,
 		}
 
 		hub.Register <- client

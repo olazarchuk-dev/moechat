@@ -1,6 +1,7 @@
 package ws
 
 import (
+	"encoding/json"
 	"fmt"
 	"strings"
 	"time"
@@ -9,11 +10,12 @@ import (
 )
 
 type Client struct {
-	Conn     *websocket.Conn
-	ClientId string `json:"clientId"`
-	Username string `json:"username"`
-	RoomId   string `json:"roomId"`
-	Message  chan *Message
+	Conn         *websocket.Conn
+	ClientId     string `json:"clientId"`
+	Username     string `json:"username"`
+	RoomId       string `json:"roomId"`
+	Message      chan *Message
+	MessageState string `json:"messageState"`
 }
 
 const (
@@ -31,6 +33,7 @@ const (
 )
 
 // from webscoket Connections to Hub
+// TODO: Receive message
 func (client *Client) ReadMessage(hub *Hub) {
 	defer func() {
 		hub.Unregister <- client
@@ -38,7 +41,7 @@ func (client *Client) ReadMessage(hub *Hub) {
 	}()
 
 	for {
-		_, messageTxt, err := client.Conn.ReadMessage()
+		_, data, err := client.Conn.ReadMessage()
 		if err != nil {
 			fmt.Println(err)
 			if strings.Contains(err.Error(), "websocket: close") {
@@ -46,17 +49,24 @@ func (client *Client) ReadMessage(hub *Hub) {
 			}
 			break
 		}
+
+		msg := Msg{}
+		json.Unmarshal(data, &msg)
+		//fmt.Println("TEST-2  |  messageTxt='" + msg.Txt + "', messageState'" + msg.State + "'")
+
 		message := Message{
-			MessageTxt: string(messageTxt),
-			ClientId:   client.ClientId,
-			RoomId:     client.RoomId,
-			Username:   client.Username,
+			MessageTxt:   msg.Txt,
+			MessageState: msg.State,
+			ClientId:     client.ClientId,
+			RoomId:       client.RoomId,
+			Username:     client.Username,
 		}
 		hub.Broadcast <- &message
 	}
 }
 
 // from Hub to websocket Connection
+// TODO: Send message
 func (client *Client) WriteMessage() {
 	defer func() {
 		fmt.Println("Connection was closed")
@@ -67,6 +77,7 @@ func (client *Client) WriteMessage() {
 			if !ok {
 				return
 			}
+			fmt.Println(message)
 			client.Conn.WriteJSON(message)
 		}
 	}

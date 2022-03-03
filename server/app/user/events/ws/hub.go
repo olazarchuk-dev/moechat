@@ -9,51 +9,51 @@ type Hub struct {
 	Rooms      map[string]*Room
 }
 
-func (h *Hub) Run() {
+func (hub *Hub) Run() {
 	for {
 		select {
-		case client := <-h.Register:
+		case client := <-hub.Register:
 			fmt.Println("Register client")
-			if _, isRoomExist := h.Rooms[client.RoomId]; !isRoomExist {
-				h.Rooms[client.RoomId] = &Room{
+			if _, isRoomExist := hub.Rooms[client.RoomId]; !isRoomExist {
+				hub.Rooms[client.RoomId] = &Room{
 					RoomId:  client.RoomId,
 					Clients: make(map[string]*Client),
 				}
 			}
-			room := h.Rooms[client.RoomId]
+			room := hub.Rooms[client.RoomId]
 			if _, isCLientExist := room.Clients[client.ClientId]; !isCLientExist {
 				room.Clients[client.ClientId] = client
 			}
 
-		case client := <-h.Unregister:
+		case client := <-hub.Unregister:
 
-			if _, isCLientExist := h.Rooms[client.RoomId].Clients[client.ClientId]; isCLientExist {
+			if _, isCLientExist := hub.Rooms[client.RoomId].Clients[client.ClientId]; isCLientExist {
 				fmt.Println("delete connection")
-				if len(h.Rooms[client.RoomId].Clients) != 0 {
-					h.Broadcast <- &Message{
+				if len(hub.Rooms[client.RoomId].Clients) != 0 {
+					hub.Broadcast <- &Message{
 						MessageTxt: "disconnect_user",
 						ClientId:   client.ClientId,
 						RoomId:     client.RoomId,
 						Username:   client.Username,
 					}
 				}
-				delete(h.Rooms[client.RoomId].Clients, client.ClientId)
+				delete(hub.Rooms[client.RoomId].Clients, client.ClientId)
 				close(client.Message)
 			}
 
 			// remove room if no one clinet
-			clients := h.Rooms[client.RoomId].Clients
+			clients := hub.Rooms[client.RoomId].Clients
 			if len(clients) == 0 {
-				delete(h.Rooms, client.RoomId)
+				delete(hub.Rooms, client.RoomId)
 			}
 
-		case message := <-h.Broadcast:
-			if _, exist := h.Rooms[message.RoomId]; exist {
-				for _, client := range h.Rooms[message.RoomId].Clients {
+		case message := <-hub.Broadcast:
+			if _, exist := hub.Rooms[message.RoomId]; exist {
+				for _, client := range hub.Rooms[message.RoomId].Clients {
 					if client.RoomId == message.RoomId {
-						client.Message <- message // TODO: MessageTxt, ClientId, RoomId, Username
+						client.Message <- message // TODO: MessageTxt, MessageState, ClientId, RoomId, Username
 						//fmt.Println(message)
-						fmt.Println("Receive <<<  User_ID = '" + message.RoomId + "'  |  Client_ID = '" + message.Username + "'  |  Message_TXT = '" + message.MessageTxt + "'")
+						fmt.Println("Receive <<<  User_ID = '" + message.RoomId + "'  |  Client_ID = '" + message.Username + "'  |  Message_TXT = '" + message.MessageTxt + "'" + "'  |  Message_STATE = '" + message.MessageState + "'")
 					}
 				}
 

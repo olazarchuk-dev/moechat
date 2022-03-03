@@ -56,7 +56,7 @@ export default function Index() {
 
   const joinRoom = (roomId: string) => {
     const ws = new WebSocket(
-      `${WEBSOCKET_URL}/${roomId}?userId=${user.id}&username=${user.username}`
+      `${WEBSOCKET_URL}/${roomId}?userId=${user.id}&username=${user.username}` // TODO: set static url-param(s)
     );
     if (ws.OPEN) {
       setConn(ws);

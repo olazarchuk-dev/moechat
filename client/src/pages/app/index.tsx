@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { WebSocketContext } from '../../modules/websocket_provider';
 import router from 'next/router';
 import TextareaBody from "../../component/textarea_body";
-import RangeBody from "../../component/range_body";
+import FuncRangeBody from "../../component/range_body";
 import { AuthContext } from '../../modules/auth_provider';
 import { Message } from '../../types/message';
 import { useGetUser } from '../../hooks/use_get_user';
@@ -11,6 +11,7 @@ import Loading from '../../component/loading';
 export default function App() {
   const [messages, setMessages] = useState<Array<Message>>([]);
   const textarea = useRef(null);
+  const rangeState = {values: [0]}
   const { conn, setConn } = useContext(WebSocketContext);
   const { user } = useContext(AuthContext);
   const [connStatus, setConnStatus] = useState('');
@@ -26,18 +27,24 @@ export default function App() {
     }
 
     conn.onmessage = (message) => {
-      const m: Message = JSON.parse(message.data);
-      if (m.messageTxt == 'new_user') {
-        setUsers([...users, { username: m.username }]);
+      const _msg: Message = JSON.parse(message.data);
+
+      // // _msg.messageState = rangeState.values[0].toString()
+      // console.log('<<< messageState:', _msg.messageState)
+
+      if (_msg.messageTxt == 'new_user') {
+        setUsers([...users, { username: _msg.username }]);
         return;
       }
-      if (m.messageTxt == 'disconnect_user') {
-        const deleteUser = users.filter((user) => user.username != m.username);
+      if (_msg.messageTxt == 'disconnect_user') {
+        const deleteUser = users.filter((user) => user.username != _msg.username);
         setUsers([...deleteUser]);
         return;
       }
-      user.id == m.clientId ? (m.type = 'recv') : (m.type = 'self');
-      setMessages([...messages, m]);
+      user.id == _msg.clientId ? (_msg.type = 'recv') : (_msg.type = 'self');
+
+      setMessages([...messages, _msg]);
+      console.log('<<< getMessages:', messages)
     };
 
     conn.onclose = (conn) => {
@@ -55,8 +62,10 @@ export default function App() {
 
   const sendMessage = () => {
     console.log('TextareaValue:', textarea.current.value, '>>> send');
+    console.log('StateValues:', rangeState.values[0], '>>> send');
     if (!textarea.current.value) return;
-    conn.send(textarea.current.value);
+    // conn.send(textarea.current.value); // TODO: set dynamic url-param(s)
+    conn.send( '{ "txt": "' + textarea.current.value + '", "state": "' + rangeState.values[0] + '" }' ); // TODO: set dynamic url-param(s)
     // console.log('>>> ' + textarea.current.value.valueOf());
   };
 
@@ -94,7 +103,7 @@ export default function App() {
             </div>
             <TextareaBody msg={messages} txt={textarea} />
 
-            <br/><br/> <RangeBody />
+            <br/><br/> <FuncRangeBody msg={messages} rangeState={rangeState} />
 
           </div>
         </div>

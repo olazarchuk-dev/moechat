@@ -22,7 +22,7 @@ type MyJwtClaims struct {
 }
 
 var (
-	APP_NAME                 = "Moechat"
+	APP_NAME                 = "Social-Service"
 	JWT_SIGNING_METHOD       = jwt.SigningMethodHS256
 	JWT_ACESS_TOKEN_EXPIRED  = time.Duration(1) * time.Hour
 	JWT_ACCESS_TOKEN_EXPIRED = time.Duration(30) * (time.Hour * 24)

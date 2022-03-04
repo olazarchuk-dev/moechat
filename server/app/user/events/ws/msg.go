@@ -1,6 +1,6 @@
 package ws
 
 type Msg struct {
-	MsgTxt   string `json:"msgTxt"`
-	MsgState string `json:"msgState"`
+	MessageTxt   string `json:"messageTxt"`
+	MessageState string `json:"messageState"`
 }

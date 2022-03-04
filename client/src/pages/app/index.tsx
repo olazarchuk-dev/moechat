@@ -58,10 +58,14 @@ export default function App() {
   }, [textarea, messages, conn, users]);
 
   const sendMessage = () => {
-    console.log('TextareaValue:', textarea.current.value, '>>> send');
-    console.log('StateValue:', state.current.values[0], '>>> send');
+    let data = {
+      messageTxt: textarea.current.value,
+      messageState: state.current.values[0]
+    }
+    console.log(data, '>>> send');
+
     if (!textarea.current.value) return;
-    conn.send( '{ "messageTxt": "' + textarea.current.value + '", "messageState": "' + state.current.values[0] + '" }' ); // TODO: set dynamic url-param(s)
+    conn.send( JSON.stringify(data) ); // TODO: set dynamic url-param(s)
     // console.log('>>> ' + textarea.current.value.valueOf());
   };
 

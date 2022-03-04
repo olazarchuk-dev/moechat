@@ -1,6 +1,6 @@
 export type Message = {
   messageTxt: string;
-  messageState: string;
+  messageState: number;
   clientId: number;
   username: string;
   roomId: string;

@@ -20,11 +20,11 @@ import { Message } from "../types/message";
 
 export default function FuncRangeBody({ msg,stateVal }): JSX.Element {
     const msgLength = msg.length;
-    let msgState = Number('0');
+    let msgState = 0;
     msg.map((message: Message, index: number) => {
         if (index == msgLength-1) {
             console.log('StateValue:', message.messageState, '<<< sync') // TODO: sync locale StateValue
-            msgState = Number(message.messageState);
+            msgState = message.messageState;
         }
     });
 

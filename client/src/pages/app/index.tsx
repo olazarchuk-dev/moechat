@@ -101,10 +101,10 @@ export default function App() {
                 }}
                 onChange={sendMessage}>
               </textarea>
-              <TextareaBody msg={messages} txt={textarea} />
+              <TextareaBody messages={messages} txt={textarea} />
             </div>
 
-            <br/><br/> <FuncRangeBody msg={messages} stateVal={state} />
+            <br/><br/> <FuncRangeBody messages={messages} stateVal={state} />
           </div>
 
         </div>

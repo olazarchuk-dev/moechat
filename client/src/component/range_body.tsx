@@ -21,9 +21,9 @@ import { Message } from "../types/message";
  * 3. Добавление слайдера...
  */
 
-export default function FuncRangeBody({ msg,stateVal,msgState=0 }): JSX.Element {
-    const msgLength = msg.length-1;
-    msg.map((message: Message, msgIndex: number) => {
+export default function FuncRangeBody({ messages,stateVal,msgState=0 }): JSX.Element {
+    const msgLength = messages.length-1;
+    messages.map((message: Message, msgIndex: number) => {
         if (msgIndex == msgLength) {
             console.log('StateValue:', message.messageState, '<<< sync') // TODO: sync locale StateValue
             msgState = message.messageState;

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Message } from '../types/message';
 
-export default function TextareaBody({ msg,txt }): JSX.Element {
-  return msg.map((message: Message, index: number) => {
+export default function TextareaBody({ messages,txt }): JSX.Element {
+  return messages.map((message: Message, index: number) => {
 
       // console.log("[[[ " + objToString(txt.current))
       txt.current.value = message.messageTxt

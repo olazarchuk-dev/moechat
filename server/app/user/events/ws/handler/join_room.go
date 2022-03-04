@@ -29,7 +29,7 @@ func JoinRoom(hub *ws.Hub) fiber.Handler {
 
 		message := ws.Message{
 			MessageTxt:   "new_user",
-			MessageState: "0",
+			MessageState: 0,
 			ClientId:     client.ClientId,
 			RoomId:       client.RoomId,
 			Username:     username,

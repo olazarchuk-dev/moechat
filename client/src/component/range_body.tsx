@@ -32,7 +32,7 @@ export default function FuncRangeBody({ msg,stateVal }): JSX.Element {
         state = {values: [msgState]}; // 2. после этого мы создаем состояние для хранения начального значения
 
         render() {
-            stateVal.values = this.state.values
+            stateVal.current.values = this.state.values
 
             // 3. затем мы добавляем наш компонент Range
             return (

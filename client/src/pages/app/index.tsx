@@ -11,7 +11,7 @@ import Loading from '../../component/loading';
 export default function App() {
   const [messages, setMessages] = useState<Array<Message>>([]);
   const textarea = useRef(null);
-  const state = {values: [0]}
+  const state = useRef({values: [0]});
   const { conn, setConn } = useContext(WebSocketContext);
   const { user } = useContext(AuthContext);
   const [connStatus, setConnStatus] = useState('');
@@ -59,9 +59,9 @@ export default function App() {
 
   const sendMessage = () => {
     console.log('TextareaValue:', textarea.current.value, '>>> send');
-    console.log('StateValue:', state.values[0], '>>> send');
+    console.log('StateValue:', state.current.values[0], '>>> send');
     if (!textarea.current.value) return;
-    conn.send( '{ "messageTxt": "' + textarea.current.value + '", "messageState": "' + state.values[0] + '" }' ); // TODO: set dynamic url-param(s)
+    conn.send( '{ "messageTxt": "' + textarea.current.value + '", "messageState": "' + state.current.values[0] + '" }' ); // TODO: set dynamic url-param(s)
     // console.log('>>> ' + textarea.current.value.valueOf());
   };
 

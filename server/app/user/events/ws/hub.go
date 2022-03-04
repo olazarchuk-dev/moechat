@@ -1,6 +1,9 @@
 package ws
 
-import "fmt"
+import (
+	"fmt"
+	"strconv"
+)
 
 type Hub struct {
 	Broadcast  chan *Message
@@ -53,7 +56,7 @@ func (hub *Hub) Run() {
 					if client.RoomId == message.RoomId {
 						client.Message <- message // TODO: MessageTxt, MessageState, ClientId, RoomId, Username
 						//fmt.Println(message)
-						fmt.Println("Receive <<<  User_ID = '" + message.RoomId + "'  |  Client_ID = '" + message.Username + "'  |  Message_TXT = '" + message.MessageTxt + "'" + "'  |  Message_STATE = " + string(message.MessageState))
+						fmt.Println("Receive <<<  User_ID = '" + message.RoomId + "'  |  Client_ID = '" + message.Username + "'  |  Message_TXT = '" + message.MessageTxt + "'  |  Message_STATE = " + strconv.Itoa(message.MessageState))
 					}
 				}
 

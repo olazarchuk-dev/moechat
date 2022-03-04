@@ -3,6 +3,9 @@ import { Range } from 'react-range'; // 1. сначала импортируем
 import { Message } from "../types/message";
 
 /**
+ * @see https://www.freecodecamp.org/news/nextjs-tutorial
+ *      https://nextjs.org/learn/basics/create-nextjs-app
+ *
  * @see https://www.geeksforgeeks.org/how-to-add-slider-in-next-js
  *
  * NextJS — это фреймворк на основе React.
@@ -18,11 +21,10 @@ import { Message } from "../types/message";
  * 3. Добавление слайдера...
  */
 
-export default function FuncRangeBody({ msg,stateVal }): JSX.Element {
-    const msgLength = msg.length;
-    let msgState = 0;
-    msg.map((message: Message, index: number) => {
-        if (index == msgLength-1) {
+export default function FuncRangeBody({ msg,stateVal,msgState=0 }): JSX.Element {
+    const msgLength = msg.length-1;
+    msg.map((message: Message, msgIndex: number) => {
+        if (msgIndex == msgLength) {
             console.log('StateValue:', message.messageState, '<<< sync') // TODO: sync locale StateValue
             msgState = message.messageState;
         }

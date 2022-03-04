@@ -1,7 +1,4 @@
-import {
-  createContext,
-  useState,
-} from 'react';
+import { createContext, useState } from 'react';
 
 type Conn = WebSocket | null;
 

@@ -11,7 +11,7 @@ import Loading from '../../component/loading';
 export default function App() {
   const [messages, setMessages] = useState<Array<Message>>([]);
   const textarea = useRef(null);
-  const rangeState = {values: [0]}
+  const state = {values: [0]}
   const { conn, setConn } = useContext(WebSocketContext);
   const { user } = useContext(AuthContext);
   const [connStatus, setConnStatus] = useState('');
@@ -26,25 +26,22 @@ export default function App() {
       return;
     }
 
-    conn.onmessage = (message) => {
-      const _msg: Message = JSON.parse(message.data);
+    conn.onmessage = (msg) => { // TODO: sync remote Message(s)
+      const message: Message = JSON.parse(msg.data);
 
-      // // _msg.messageState = rangeState.values[0].toString()
-      // console.log('<<< messageState:', _msg.messageState)
-
-      if (_msg.messageTxt == 'new_user') {
-        setUsers([...users, { username: _msg.username }]);
+      if (message.messageTxt == 'new_user') {
+        setUsers([...users, { username: message.username }]);
         return;
       }
-      if (_msg.messageTxt == 'disconnect_user') {
-        const deleteUser = users.filter((user) => user.username != _msg.username);
+      if (message.messageTxt == 'disconnect_user') {
+        const deleteUser = users.filter((user) => user.username != message.username);
         setUsers([...deleteUser]);
         return;
       }
-      user.id == _msg.clientId ? (_msg.type = 'recv') : (_msg.type = 'self');
+      user.id == message.clientId ? (message.type = 'recv') : (message.type = 'self');
 
-      setMessages([...messages, _msg]);
-      console.log('<<< getMessages:', messages)
+      setMessages([...messages, message]);
+      console.log('<<< messages:', messages)
     };
 
     conn.onclose = (conn) => {
@@ -62,10 +59,9 @@ export default function App() {
 
   const sendMessage = () => {
     console.log('TextareaValue:', textarea.current.value, '>>> send');
-    console.log('StateValues:', rangeState.values[0], '>>> send');
+    console.log('StateValue:', state.values[0], '>>> send');
     if (!textarea.current.value) return;
-    // conn.send(textarea.current.value); // TODO: set dynamic url-param(s)
-    conn.send( '{ "txt": "' + textarea.current.value + '", "state": "' + rangeState.values[0] + '" }' ); // TODO: set dynamic url-param(s)
+    conn.send( '{ "msgTxt": "' + textarea.current.value + '", "msgState": "' + state.values[0] + '" }' ); // TODO: set dynamic url-param(s)
     // console.log('>>> ' + textarea.current.value.valueOf());
   };
 
@@ -85,6 +81,7 @@ export default function App() {
   return (
       <div className="flex flex-col md:flex-row w-full">
         <div className="flex flex-col w-full md:w-9/12">
+
           <div className="p-4 md:mx-24 mb-14">
             <div className="flex w-full mr-4 bg-dark-secondary border border-dark-secondary"
                  style={{
@@ -102,10 +99,9 @@ export default function App() {
               </textarea>
             </div>
             <TextareaBody msg={messages} txt={textarea} />
-
-            <br/><br/> <FuncRangeBody msg={messages} rangeState={rangeState} />
-
+            <br/><br/> <FuncRangeBody msg={messages} stateVal={state} />
           </div>
+
         </div>
         <div className="md:w-3/12 md:visible invisible flex flex-col border-l-2 border-dark-secondary p-4">
           <div className="fixed">

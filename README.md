@@ -37,7 +37,7 @@
    ![Screenshot-15](client/screenshot_15.png)
    ![Screenshot-16](client/screenshot_16.png)
 4. `synchronized`: http://localhost:3000/app
-   ![Screenshot-17](client/screenshot_17.png)
-   ![Screenshot-17](client/screenshot_18.png)
+   ![Screenshot-20](client/screenshot_20.png)
+   ![Screenshot-18](client/screenshot_18.png)
 5. `disconnected`: http://localhost:3000/app
-   ![Screenshot-17](client/screenshot_19.png)
+   ![Screenshot-19](client/screenshot_19.png)

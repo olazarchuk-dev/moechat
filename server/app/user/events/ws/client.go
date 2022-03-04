@@ -52,11 +52,11 @@ func (client *Client) ReadMessage(hub *Hub) {
 
 		msg := Msg{}
 		json.Unmarshal(data, &msg)
-		//fmt.Println("TEST-2  |  messageTxt='" + msg.Txt + "', messageState'" + msg.State + "'")
+		//fmt.Println("TEST-2  |  messageTxt='" + msg.MsgTxt + "', messageState'" + msg.MsgState + "'")
 
 		message := Message{
-			MessageTxt:   msg.Txt,
-			MessageState: msg.State,
+			MessageTxt:   msg.MsgTxt,
+			MessageState: msg.MsgState,
 			ClientId:     client.ClientId,
 			RoomId:       client.RoomId,
 			Username:     client.Username,

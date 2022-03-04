@@ -1,5 +1,5 @@
 {
-  "name": "@moechat/mashu",
+  "name": "@socialService/mashu",
   "private": true,
   "scripts": {
     "dev": "next dev",

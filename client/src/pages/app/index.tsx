@@ -2,16 +2,37 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { WebSocketContext } from '../../modules/websocket_provider';
 import router from 'next/router';
 import TextareaBody from "../../component/textarea_body";
-import FuncRangeBody from "../../component/range_body";
+import { Range } from 'react-range'; // 1. сначала импортируем наш компонент Range из установленного пакета
 import { AuthContext } from '../../modules/auth_provider';
 import { Message } from '../../types/message';
 import { useGetUser } from '../../hooks/use_get_user';
 import Loading from '../../component/loading';
 
+/**
+ * @see https://www.freecodecamp.org/news/nextjs-tutorial
+ *      https://nextjs.org/learn/basics/create-nextjs-app
+ *      https://reactjs.org/docs/hooks-state.html
+ *
+ * @see https://www.geeksforgeeks.org/how-to-add-slider-in-next-js
+ *
+ * NextJS — это фреймворк на основе React.
+ * Он может разрабатывать красивые веб-приложения для различных платформ, таких как Windows, Linux и Mac.
+ *
+ * Чтобы добавить слайдер, мы воспользуемся пакетом react-range.
+ * Пакет react-range помогает нам интегрировать ползунки в любое место нашего приложения.
+ *
+ * 1. Создать приложение NextJS, используя следующую команду:
+ *    npx create-next-app gfg
+ * 2. Установите необходимый пакет 'react-range', используя следующую команду:
+ *    npm i react-range
+ * 3. Добавление слайдера...
+ */
+
 export default function App() {
   const [messages, setMessages] = useState<Array<Message>>([]);
-  const textarea = useRef(null);
-  const state = useRef({values: [0]});
+  const textareaVal = useRef(null); // TODO: locale Textarea
+  const [rangeVal, setRangeVal] = useState({values: [0]}); // TODO: locale Range
+  const syncRangeVal = useRef({values: [0]});              // TODO: sync remote Range
   const { conn, setConn } = useContext(WebSocketContext);
   const { user } = useContext(AuthContext);
   const [connStatus, setConnStatus] = useState('');
@@ -26,7 +47,7 @@ export default function App() {
       return;
     }
 
-    conn.onmessage = (msg) => { // TODO: sync remote Message(s)
+    conn.onmessage = (msg) => { // TODO: receive remote Message(s)
       const message: Message = JSON.parse(msg.data);
 
       if (message.messageTxt == 'new_user') {
@@ -40,6 +61,8 @@ export default function App() {
       }
       user.id == message.clientId ? (message.type = 'recv') : (message.type = 'self');
 
+      setRangeVal({values: [message.messageState]});  // 2.1 после этого мы создаем состояние для хранения начального значения
+      syncRangeVal.current.values = [message.messageState]; // 2.2 после этого мы создаем состояние для хранения начального значения
       setMessages([...messages, message]);
       console.log('<<< messages:', messages)
     };
@@ -55,17 +78,16 @@ export default function App() {
     conn.onopen = (conn) => {
       setConnStatus('connected');
     };
-  }, [textarea, messages, conn, users]);
+  }, [textareaVal, messages, conn, users]);
 
   const sendMessage = () => {
     let data = {
-      messageTxt: textarea.current.value,
-      messageState: state.current.values[0]
+      messageTxt: textareaVal.current.value,
+      messageState: syncRangeVal.current.values[0]
     }
     console.log(data, '>>> send');
 
-    if (!textarea.current.value) return;
-    conn.send( JSON.stringify(data) ); // TODO: set dynamic url-param(s)
+    conn.send( JSON.stringify(data) ); // TODO: send locale Message(s)
     // console.log('>>> ' + textarea.current.value.valueOf());
   };
 
@@ -93,7 +115,7 @@ export default function App() {
                    borderRadius: '5px'
                  }}>
               <textarea
-                ref={textarea}
+                ref={textareaVal}
                 className="w-full p-2 h-2 rounded-md bg-dark-primary focus:outline-none"
                 style={{
                   backgroundColor: '#312b2b',
@@ -101,10 +123,57 @@ export default function App() {
                 }}
                 onChange={sendMessage}>
               </textarea>
-              <TextareaBody messages={messages} txt={textarea} />
+              <TextareaBody messages={messages} txt={textareaVal} />
             </div>
 
-            <br/><br/> <FuncRangeBody messages={messages} stateVal={state} />
+            {/* 3. затем мы добавляем наш компонент Range */}
+            <br/><br/> <Range
+                // 4.1 в компоненте диапазона мы устанавливаем минимальное значение, максимальное значение и текущее значение
+                step={1}
+                min={0}
+                max={100}
+                values={rangeVal.values}
+
+                // 4.2 в компоненте диапазона мы устанавливаем функцию onChange
+                onChange={
+                    (values) => {
+                        setRangeVal({values});
+                        syncRangeVal.current.values = values;
+                        sendMessage();
+                    }
+                }
+
+                renderTrack={({props, children}) => (
+                    <div
+                        {...props}
+                        style={{
+                            ...props.style,
+                            height: '20px',
+                            width: '100%',
+                            backgroundColor: '#312b2b',
+                            borderColor: 'green',
+                            borderRadius: '5px',
+                            borderWidth: 'thin'
+                        }}>
+                        {children}
+                    </div>
+                )}
+
+                renderThumb={({props}) => (
+                    <div
+                        {...props}
+                        style={{
+                            ...props.style,
+                            padding: '10px',
+                            backgroundColor: '#312b2b',
+                            borderColor: 'green',
+                            borderRadius: '5px',
+                            borderWidth: 'thin'
+                        }}>
+                        <span>{rangeVal.values} %</span>
+                    </div>
+                )}
+            />
           </div>
 
         </div>

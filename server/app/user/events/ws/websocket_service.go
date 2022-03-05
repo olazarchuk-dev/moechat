@@ -9,7 +9,7 @@ import (
 	"github.com/gofiber/websocket/v2"
 )
 
-type Client struct {
+type WebsocketService struct {
 	Conn         *websocket.Conn
 	ClientId     string `json:"clientId"`
 	Username     string `json:"username"`
@@ -34,14 +34,14 @@ const (
 
 // from webscoket Connections to Hub
 // TODO: Receive message
-func (client *Client) ReadMessage(hub *Hub) {
+func (websocketService *WebsocketService) ReadMessage(hub *Hub) {
 	defer func() {
-		hub.Unregister <- client
-		client.Conn.Close()
+		hub.Unregister <- websocketService
+		websocketService.Conn.Close()
 	}()
 
 	for {
-		_, data, err := client.Conn.ReadMessage()
+		_, data, err := websocketService.Conn.ReadMessage()
 		if err != nil {
 			fmt.Println(err)
 			if strings.Contains(err.Error(), "websocket: close") {
@@ -57,9 +57,9 @@ func (client *Client) ReadMessage(hub *Hub) {
 		message := Message{
 			MessageTxt:   msg.MessageTxt,
 			MessageState: msg.MessageState,
-			ClientId:     client.ClientId,
-			RoomId:       client.RoomId,
-			Username:     client.Username,
+			ClientId:     websocketService.ClientId,
+			RoomId:       websocketService.RoomId,
+			Username:     websocketService.Username,
 		}
 		hub.Broadcast <- &message
 	}
@@ -67,18 +67,18 @@ func (client *Client) ReadMessage(hub *Hub) {
 
 // from Hub to websocket Connection
 // TODO: Send message
-func (client *Client) WriteMessage() {
+func (websocketService *WebsocketService) WriteMessage() {
 	defer func() {
 		fmt.Println("Connection was closed")
 	}()
 	for {
 		select {
-		case message, ok := <-client.Message:
+		case message, ok := <-websocketService.Message:
 			if !ok {
 				return
 			}
 			fmt.Println(message)
-			client.Conn.WriteJSON(message)
+			websocketService.Conn.WriteJSON(message)
 		}
 	}
 }

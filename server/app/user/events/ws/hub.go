@@ -7,8 +7,8 @@ import (
 
 type Hub struct {
 	Broadcast  chan *Message
-	Register   chan *Client
-	Unregister chan *Client
+	Register   chan *WebsocketService
+	Unregister chan *WebsocketService
 	Rooms      map[string]*Room
 }
 
@@ -20,7 +20,7 @@ func (hub *Hub) Run() {
 			if _, isRoomExist := hub.Rooms[client.RoomId]; !isRoomExist {
 				hub.Rooms[client.RoomId] = &Room{
 					RoomId:  client.RoomId,
-					Clients: make(map[string]*Client),
+					Clients: make(map[string]*WebsocketService),
 				}
 			}
 			room := hub.Rooms[client.RoomId]
@@ -68,8 +68,8 @@ func (hub *Hub) Run() {
 func NewHub() *Hub {
 	return &Hub{
 		Broadcast:  make(chan *Message, 5),
-		Register:   make(chan *Client),
-		Unregister: make(chan *Client),
+		Register:   make(chan *WebsocketService),
+		Unregister: make(chan *WebsocketService),
 		Rooms:      make(map[string]*Room),
 	}
 }

@@ -35,12 +35,12 @@
 > go build main.go
 ```
 
-![Screenshot-3](screenshot_6.png)
+![Screenshot-3](img/screenshot_6.png)
 
-![Screenshot-1](screenshot_1.png)
+![Screenshot-1](img/screenshot_1.png)
 
-![Screenshot-5](screenshot_5.png)
+![Screenshot-5](img/screenshot_5.png)
 
-![Screenshot-4](screenshot_4.png)
+![Screenshot-4](img/screenshot_4.png)
 
-![Screenshot-3](screenshot_3.png)
+![Screenshot-3](img/screenshot_3.png)

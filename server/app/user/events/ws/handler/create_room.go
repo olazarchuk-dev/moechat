@@ -19,9 +19,9 @@ func CreateRoom(c *fiber.Ctx, h *ws.Hub) error {
 	}
 
 	h.Rooms[room.RoomId] = &ws.Room{
-		RoomId:   room.RoomId,
-		RoomName: room.RoomName,
-		Clients:  make(map[string]*ws.WebsocketService),
+		RoomId:     room.RoomId,
+		RoomName:   room.RoomName,
+		WsServices: make(map[string]*ws.WsService),
 	}
 
 	return c.JSON(room)

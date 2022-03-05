@@ -18,7 +18,7 @@ func JoinRoom(hub *ws.Hub) fiber.Handler {
 
 		fmt.Println(roomId, clientId)
 
-		client := &ws.WebsocketService{
+		client := &ws.WsService{
 			Username:     username,
 			Conn:         conn,
 			RoomId:       roomId,

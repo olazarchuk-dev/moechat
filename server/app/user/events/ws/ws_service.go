@@ -9,7 +9,7 @@ import (
 	"github.com/gofiber/websocket/v2"
 )
 
-type WebsocketService struct {
+type WsService struct {
 	Conn         *websocket.Conn
 	ClientId     string `json:"clientId"`
 	Username     string `json:"username"`
@@ -34,7 +34,7 @@ const (
 
 // from webscoket Connections to Hub
 // TODO: Receive message
-func (websocketService *WebsocketService) ReadMessage(hub *Hub) {
+func (websocketService *WsService) ReadMessage(hub *Hub) {
 	defer func() {
 		hub.Unregister <- websocketService
 		websocketService.Conn.Close()
@@ -67,7 +67,7 @@ func (websocketService *WebsocketService) ReadMessage(hub *Hub) {
 
 // from Hub to websocket Connection
 // TODO: Send message
-func (websocketService *WebsocketService) WriteMessage() {
+func (websocketService *WsService) WriteMessage() {
 	defer func() {
 		fmt.Println("Connection was closed")
 	}()

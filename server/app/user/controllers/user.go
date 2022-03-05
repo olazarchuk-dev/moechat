@@ -18,7 +18,7 @@ func Init(app *fiber.App, db *sql.DB) {
 	go hub.Run()
 
 	app.Get("/ws/rooms/:roomId", func(c *fiber.Ctx) error {
-		return handler.GetClientInRoom(c, hub)
+		return handler.GetWsServiceInUser(c, hub)
 	})
 
 	app.Get("/ws/:roomId", handler.JoinRoom(hub))

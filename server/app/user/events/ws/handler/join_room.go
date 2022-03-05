@@ -18,7 +18,7 @@ func JoinRoom(hub *ws.Hub) fiber.Handler {
 
 		fmt.Println(roomId, clientId)
 
-		client := &ws.WsService{
+		wsService := &ws.WsService{
 			Username:     username,
 			Conn:         conn,
 			RoomId:       roomId,
@@ -30,16 +30,16 @@ func JoinRoom(hub *ws.Hub) fiber.Handler {
 		message := ws.Message{
 			MessageTxt:   "new_client",
 			MessageState: 0,
-			ClientId:     client.ClientId,
-			RoomId:       client.RoomId,
+			ClientId:     wsService.ClientId,
+			RoomId:       wsService.RoomId,
 			Username:     username,
 		}
 
-		hub.Register <- client
+		hub.Register <- wsService
 		hub.Broadcast <- &message
 
-		go client.WriteMessage()
-		client.ReadMessage(hub)
+		go wsService.WriteMessage()
+		wsService.ReadMessage(hub)
 
 	})
 }

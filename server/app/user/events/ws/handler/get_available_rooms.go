@@ -16,7 +16,7 @@ type RoomList struct {
 	RoomId   string `json:"roomId"`
 }
 
-func GetAvailableRooms(c *fiber.Ctx, h *ws.Hub) error {
+func GetAvailableRooms(ctx *fiber.Ctx, h *ws.Hub) error {
 
 	rooms := make([]RoomList, 0)
 
@@ -36,5 +36,5 @@ func GetAvailableRooms(c *fiber.Ctx, h *ws.Hub) error {
 		Data: &rooms,
 	}
 
-	return c.JSON(&res)
+	return ctx.JSON(&res)
 }

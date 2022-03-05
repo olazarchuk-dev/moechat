@@ -34,14 +34,14 @@ const (
 
 // from webscoket Connections to Hub
 // TODO: Receive message
-func (websocketService *WsService) ReadMessage(hub *Hub) {
+func (wsService *WsService) ReadMessage(hub *Hub) {
 	defer func() {
-		hub.Unregister <- websocketService
-		websocketService.Conn.Close()
+		hub.Unregister <- wsService
+		wsService.Conn.Close()
 	}()
 
 	for {
-		_, data, err := websocketService.Conn.ReadMessage()
+		_, data, err := wsService.Conn.ReadMessage()
 		if err != nil {
 			fmt.Println(err)
 			if strings.Contains(err.Error(), "websocket: close") {
@@ -57,9 +57,9 @@ func (websocketService *WsService) ReadMessage(hub *Hub) {
 		message := Message{
 			MessageTxt:   msg.MessageTxt,
 			MessageState: msg.MessageState,
-			ClientId:     websocketService.ClientId,
-			RoomId:       websocketService.RoomId,
-			Username:     websocketService.Username,
+			ClientId:     wsService.ClientId,
+			RoomId:       wsService.RoomId,
+			Username:     wsService.Username,
 		}
 		hub.Broadcast <- &message
 	}
@@ -67,18 +67,18 @@ func (websocketService *WsService) ReadMessage(hub *Hub) {
 
 // from Hub to websocket Connection
 // TODO: Send message
-func (websocketService *WsService) WriteMessage() {
+func (wsService *WsService) WriteMessage() {
 	defer func() {
 		fmt.Println("Connection was closed")
 	}()
 	for {
 		select {
-		case message, ok := <-websocketService.Message:
+		case message, ok := <-wsService.Message:
 			if !ok {
 				return
 			}
 			fmt.Println(message)
-			websocketService.Conn.WriteJSON(message)
+			wsService.Conn.WriteJSON(message)
 		}
 	}
 }

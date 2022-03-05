@@ -27,17 +27,17 @@
 ```
 
 1. `register`: http://localhost:3000/register
-   ![Screenshot-10](client/screenshot_10.png)
+   ![Screenshot-10](client/img/screenshot_10.png)
 2. `login`: http://localhost:3000/login
-   ![Screenshot-11](client/screenshot_11.png)
+   ![Screenshot-11](client/img/screenshot_11.png)
 3. `connect`: http://localhost:3000/app
-   ![Screenshot-12](client/screenshot_12.png)
-   ![Screenshot-13](client/screenshot_13.png)
-   ![Screenshot-14](client/screenshot_14.png)
-   ![Screenshot-15](client/screenshot_15.png)
-   ![Screenshot-16](client/screenshot_16.png)
+   ![Screenshot-12](client/img/screenshot_12.png)
+   ![Screenshot-13](client/img/screenshot_13.png)
+   ![Screenshot-14](client/img/screenshot_14.png)
+   ![Screenshot-15](client/img/screenshot_15.png)
+   ![Screenshot-16](client/img/screenshot_16.png)
 4. `synchronized`: http://localhost:3000/app
-   ![Screenshot-20](client/screenshot_20.png)
-   ![Screenshot-18](client/screenshot_18.png)
+   ![Screenshot-20](client/img/screenshot_20.png)
+   ![Screenshot-18](client/img/screenshot_18.png)
 5. `disconnected`: http://localhost:3000/app
-   ![Screenshot-19](client/screenshot_19.png)
+   ![Screenshot-19](client/img/screenshot_19.png)

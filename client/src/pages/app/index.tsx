@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { WebSocketContext } from '../../modules/websocket_provider';
 import router from 'next/router';
-import TextareaBody from "../../component/textarea_body";
+import SyncTextarea from "../../component/sync_textarea";
 import { Range } from 'react-range'; // 1. сначала импортируем наш компонент Range из установленного пакета
 import { AuthContext } from '../../modules/auth_provider';
 import { Message } from '../../types/message';
@@ -9,10 +9,6 @@ import { useGetUser } from '../../hooks/use_get_user';
 import Loading from '../../component/loading';
 
 /**
- * @see https://www.freecodecamp.org/news/nextjs-tutorial
- *      https://nextjs.org/learn/basics/create-nextjs-app
- *      https://reactjs.org/docs/hooks-state.html
- *
  * @see https://www.geeksforgeeks.org/how-to-add-slider-in-next-js
  *
  * NextJS — это фреймворк на основе React.
@@ -123,7 +119,7 @@ export default function App() {
                 }}
                 onChange={sendMessage}>
               </textarea>
-              <TextareaBody messages={messages} txt={textareaVal} />
+              <SyncTextarea messages={messages} syncTextareaVal={textareaVal} />
             </div>
 
             {/* 3. затем мы добавляем наш компонент Range */}

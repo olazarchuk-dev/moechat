@@ -5,7 +5,7 @@ import SyncTextarea from "../../component/sync_textarea";
 import { Range } from 'react-range'; // 1. сначала импортируем наш компонент Range из установленного пакета
 import { AuthContext } from '../../modules/auth_provider';
 import { Message } from '../../types/message';
-import { useGetUser } from '../../hooks/use_get_user';
+import { useGetClient } from '../../hooks/use_get_client';
 import Loading from '../../component/loading';
 
 /**
@@ -30,13 +30,13 @@ export default function App() {
   const [rangeVal, setRangeVal] = useState({values: [0]}); // TODO: locale Range
   const syncRangeVal = useRef({values: [0]});              // TODO: sync remote Range
   const { conn, setConn } = useContext(WebSocketContext);
-  const { user } = useContext(AuthContext);
+  const { client } = useContext(AuthContext);
   const [connStatus, setConnStatus] = useState('');
 
-  const { users, setUsers } = useGetUser();
+  const { clients, setClients } = useGetClient();
 
   useEffect(() => {
-    console.log(user);
+    console.log(client);
 
     if (conn === null) {
       router.push('/');
@@ -46,16 +46,16 @@ export default function App() {
     conn.onmessage = (msg) => { // TODO: receive remote Message(s)
       const message: Message = JSON.parse(msg.data);
 
-      if (message.messageTxt == 'new_user') {
-        setUsers([...users, { username: message.username }]);
+      if (message.messageTxt == 'new_client') {
+        setClients([...clients, { username: message.username }]);
         return;
       }
       if (message.messageTxt == 'disconnect_user') {
-        const deleteUser = users.filter((user) => user.username != message.username);
-        setUsers([...deleteUser]);
+        const deleteClient = clients.filter((client) => client.username != message.username);
+        setClients([...deleteClient]);
         return;
       }
-      user.id == message.clientId ? (message.type = 'recv') : (message.type = 'self');
+      client.id == message.clientId ? (message.type = 'recv') : (message.type = 'self');
 
       setRangeVal({values: [message.messageState]});  // 2.1 после этого мы создаем состояние для хранения начального значения
       syncRangeVal.current.values = [message.messageState]; // 2.2 после этого мы создаем состояние для хранения начального значения
@@ -74,7 +74,7 @@ export default function App() {
     conn.onopen = (conn) => {
       setConnStatus('connected');
     };
-  }, [textareaVal, messages, conn, users]);
+  }, [textareaVal, messages, conn, clients]);
 
   const sendMessage = () => {
     let data = {
@@ -94,11 +94,11 @@ export default function App() {
     const ws = new WebSocket(conn.url);
     if (ws.OPEN) {
       setConn(ws);
-      setUsers([]);
+      setClients([]);
     }
   };
 
-  if (users === [] || conn === null) <Loading></Loading>;
+  if (clients === [] || conn === null) <Loading></Loading>;
 
   return (
       <div className="flex flex-col md:flex-row w-full">
@@ -177,13 +177,13 @@ export default function App() {
           <div className="fixed">
             <OnCloseConnection reconnect={reconnect} message={connStatus} />
             <div className="text-lg font-bold mb-4">online</div>
-            {users.map((user, index) => (
+            {clients.map((client, index) => (
               <div
                 key={index}
                 className="flex flex-row items-center h-full min-w-full ml-4"
               >
                 <div className="h-3 bg-green w-3 mr-4 items-center rounded-full"></div>
-                <div>{user.username}</div>
+                <div>{client.username}</div>
               </div>
             ))}
           </div>

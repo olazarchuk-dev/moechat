@@ -1,6 +1,6 @@
 import router from 'next/router';
 import { useState } from 'react';
-import { User } from '../../types/user';
+import { Client } from '../../types/client';
 import { registerService } from '../../service/register';
 import Spinner from '../../component/spinner'
 
@@ -41,7 +41,7 @@ export default function Register() {
         return;
       }
 
-      const user: User = {
+      const user: Client = {
         username: username,
         password: password,
         email: email,

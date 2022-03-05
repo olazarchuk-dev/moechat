@@ -2,24 +2,24 @@ import jwtDecode from 'jwt-decode';
 import { useRouter } from 'next/router';
 import { decode } from 'punycode';
 import { createContext, useEffect, useState } from 'react';
-import { UserInfo } from '../types/user_info';
+import { ClientInfo } from '../types/client_info';
 
 export const AuthContext = createContext<{
   isAuthentcate: boolean;
   setAuthenticate: (auth: boolean) => void;
-  user: UserInfo | null;
-  setUser: (user: UserInfo) => void;
+  client: ClientInfo | null;
+  setClient: (client: ClientInfo) => void;
 }>({
   isAuthentcate: false,
   setAuthenticate: () => {},
-  user: null,
-  setUser: () => {},
+  client: null,
+  setClient: () => {},
 });
 
 export const AuthContextProvider = ({ children }) => {
   const router = useRouter();
   const [isAuthentcate, setAuthenticate] = useState(false);
-  const [user, setUser] = useState<UserInfo>(null);
+  const [client, setClient] = useState<ClientInfo>(null);
 
   useEffect(() => {
     const token = localStorage.getItem('access_token'); 
@@ -31,9 +31,9 @@ export const AuthContextProvider = ({ children }) => {
       //return;
     }
 
-    const decode: UserInfo = jwtDecode(token);
+    const decode: ClientInfo = jwtDecode(token);
     if (token && decode) {
-      setUser({
+      setClient({
         email: decode.email,
         username: decode.username,
         id: decode.id,
@@ -49,8 +49,8 @@ export const AuthContextProvider = ({ children }) => {
         value={{
           isAuthentcate: isAuthentcate,
           setAuthenticate: setAuthenticate,
-          user: user,
-          setUser: setUser,
+          client: client,
+          setClient: setClient,
         }}
       >
         {children}

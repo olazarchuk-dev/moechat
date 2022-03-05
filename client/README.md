@@ -4,6 +4,10 @@
 * `Tutorial`: https://reactjsexample.com/a-simple-chat-app-with-websocket-golang-and-react-js
 * `Repo`: https://github.com/nekonako/moechat
 * `Repo (mashu)`: https://github.com/nekonako/moechat/tree/master/mashu
+* `Get Started with Next.js – The React Library Your Project Needs`: https://www.freecodecamp.org/news/nextjs-tutorial
+  * **(** `Using the State Hook`: https://reactjs.org/docs/hooks-state.html **)**
+  * **(** `Create a Next.js App`: https://nextjs.org/learn/basics/create-nextjs-app **)**
+* `How to add Slider in Next.js`: https://www.geeksforgeeks.org/how-to-add-slider-in-next-js
 
 ### structure
 

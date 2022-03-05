@@ -1,8 +1,8 @@
 import { API_URL } from '../constants';
-import { User } from "../types/user"
+import { Client } from "../types/client"
 import { api } from './api'
 
-export const registerService = async (data : User) => {
+export const registerService = async (data : Client) => {
   try {
     const res = await api.post(`${API_URL}/register`, data);
     return Promise.resolve(res);

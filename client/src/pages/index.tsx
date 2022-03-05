@@ -8,14 +8,14 @@ import { WebSocketContext } from '../modules/websocket_provider';
 import router from 'next/router';
 import { AuthContext } from '../modules/auth_provider';
 import jwtDecode from 'jwt-decode';
-import { UserInfo } from '../types/user_info';
+import { ClientInfo } from '../types/client_info';
 
 export default function Index() {
   const [rooms, setRooms] = useState([]);
   const [message, setMessage] = useState('');
   const [roomName, setRoomName] = useState('');
   const { setConn } = useContext(WebSocketContext);
-  const { user, setUser } = useContext(AuthContext);
+  const { client, setClient } = useContext(AuthContext);
 
   const getRooms = async () => {
     try {
@@ -33,8 +33,8 @@ export default function Index() {
     getRooms();
     const token = localStorage.getItem('access_token');
     if (token) {
-      const jwt: UserInfo = jwtDecode(token);
-      setUser(jwt);
+      const jwt: ClientInfo = jwtDecode(token);
+      setClient(jwt);
     }
   }, []);
 
@@ -56,7 +56,7 @@ export default function Index() {
 
   const joinRoom = (roomId: string) => {
     const ws = new WebSocket(
-      `${WEBSOCKET_URL}/${roomId}?userId=${user.id}&username=${user.username}` // TODO: set static url-param(s)
+      `${WEBSOCKET_URL}/${roomId}?userId=${client.id}&username=${client.username}` // TODO: set static url-param(s)
     );
     if (ws.OPEN) {
       setConn(ws);
@@ -69,7 +69,7 @@ export default function Index() {
     setRoomName(value);
   };
 
-  if (rooms === [] || user === null) return <Loading />;
+  if (rooms === [] || client === null) return <Loading />;
 
   return (
     <>

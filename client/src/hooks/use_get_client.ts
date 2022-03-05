@@ -1,31 +1,31 @@
 import router from 'next/router';
 import { useContext, useEffect, useState } from 'react'
 import { WebSocketContext } from '../modules/websocket_provider';
-import { getUsersInRoom } from '../service/app'
+import { getClientsInRoom } from '../service/app'
 
-export const useGetUser = () => {
-  const [users, setUsers] = useState([]);
+export const useGetClient = () => {
+  const [clients, setClients] = useState([]);
   const [error, setError] = useState(null);
   const { conn } = useContext(WebSocketContext)
   
 
   useEffect(() => {
-    console.log(users)
+    console.log(clients)
     if (conn === null){
       router.push('/')
       return
     }
     const url = conn.url
     const roomId = url.split('/')
-    getUsersInRoom(roomId[4])
+    getClientsInRoom(roomId[4])
       .then((res) => {
         console.log(res.data);
-        setUsers(res.data.data);
+        setClients(res.data.data);
       })
       .catch((err) => {
         setError(err.message);
       });
   }, []);
 
-  return { users, error, setUsers };
+  return { clients: clients, error, setClients: setClients };
 };

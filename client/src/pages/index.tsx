@@ -1,8 +1,8 @@
-import { getRoomService } from '../service/get_rooms';
+import { getUserService } from '../service/get_users';
 import Loading from '../component/loading';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { createRoomService } from '../service/create_room';
+import { createUserService } from '../service/create_user';
 import { WEBSOCKET_URL } from '../constants';
 import { WebSocketContext } from '../modules/websocket_provider';
 import router from 'next/router';
@@ -11,26 +11,26 @@ import jwtDecode from 'jwt-decode';
 import { ClientInfo } from '../types/client_info';
 
 export default function Index() {
-  const [rooms, setRooms] = useState([]);
+  const [users, setUsers] = useState([]);
   const [message, setMessage] = useState('');
-  const [roomName, setRoomName] = useState('');
+  const [userName, setUserName] = useState('');
   const { setConn } = useContext(WebSocketContext);
   const { client, setClient } = useContext(AuthContext);
 
-  const getRooms = async () => {
+  const getUsers = async () => {
     try {
-      const res = await getRoomService();
+      const res = await getUserService();
       if (res.data.data) {
-        setRooms(res.data.data);
+        setUsers(res.data.data);
       }
     } catch (err) {
       console.log(err);
-      setMessage('something wrong when getting rooms');
+      setMessage('something wrong when getting users');
     }
   };
 
   useEffect(() => {
-    getRooms();
+    getUsers();
     const token = localStorage.getItem('access_token');
     if (token) {
       const jwt: ClientInfo = jwtDecode(token);
@@ -40,13 +40,13 @@ export default function Index() {
 
   const submit = async () => {
     try {
-      setRoomName('');
-      const res = await createRoomService({
+      setUserName('');
+      const res = await createUserService({
         roomId: uuidv4(),
-        roomName: roomName,
+        roomName: userName,
       });
       if (res.data) {
-        getRooms(); 
+        getUsers();
       }
     } catch (err) {
       console.log(err);
@@ -54,9 +54,9 @@ export default function Index() {
     }
   };
 
-  const joinRoom = (roomId: string) => {
+  const joinUser = (userId: string) => {
     const ws = new WebSocket(
-      `${WEBSOCKET_URL}/${roomId}?userId=${client.id}&username=${client.username}` // TODO: set static url-param(s)
+      `${WEBSOCKET_URL}/${userId}?userId=${client.id}&username=${client.username}` // TODO: set static url-param(s)
     );
     if (ws.OPEN) {
       setConn(ws);
@@ -64,12 +64,12 @@ export default function Index() {
     }
   };
 
-  const onRoomChange = (e) => {
+  const onUserChange = (e) => {
     const value = e.target.value;
-    setRoomName(value);
+    setUserName(value);
   };
 
-  if (rooms === [] || client === null) return <Loading />;
+  if (users === [] || client === null) return <Loading />;
 
   return (
     <>
@@ -86,7 +86,7 @@ export default function Index() {
                 type="text"
                 className="p-2 bg-dark-primary border border-green rounded-md focus:outline-none"
                 placeholder="username"
-                onChange={onRoomChange}
+                onChange={onUserChange}
               />
               <button
                 className="bg-dark-primary mt-4 md:mt-0 border border-green text-green rounded-md p-2 md:ml-4"
@@ -99,7 +99,7 @@ export default function Index() {
         <div className="mt-6">
           <div className="font-bold">join to user</div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-            {rooms.map((room, index) => (
+            {users.map((user, index) => (
               <div
                 key={index}
                 className="bg-dark-secondary p-4 flex flex-row rounded-md w-full"
@@ -107,13 +107,13 @@ export default function Index() {
                 <div className="w-full">
                   <div className="text-sm">username</div>
                   <div className="text-yellow font-bold text-lg">
-                    {room.roomName}
+                    {user.roomName}
                   </div>
                 </div>
                 <div className="inline-block">
                   <button
                     className="bg-dark-primary px-4 text-yellow border border-yellow rounded-md"
-                    onClick={() => joinRoom(room.roomId)}
+                    onClick={() => joinUser(user.roomId)}
                   >
                     join
                   </button>

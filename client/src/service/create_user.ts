@@ -2,13 +2,13 @@ import { AxiosResponse } from 'axios';
 import { api } from './/api';
 import { API_URL } from '../constants';
 
-type Room = {
+type User = {
   roomName: string;
   roomId: string;
 };
 
-export async function createRoomService(
-  data: Room
+export async function createUserService(
+  data: User
 ): Promise<AxiosResponse<any, any>> {
   try {
     const res = await api.post(`${API_URL}/ws`, data);

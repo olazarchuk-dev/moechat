@@ -5,23 +5,23 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/websocket/v2"
-	"github.com/nekonako/moechat/app/user/events/ws"
+	"github.com/nekonako/moechat/app/client/events/ws"
 )
 
-func JoinRoom(hub *ws.Hub) fiber.Handler {
+func JoinUser(hub *ws.Hub) fiber.Handler {
 	return websocket.New(func(conn *websocket.Conn) {
 
-		roomId := conn.Params("roomId")
-		clientId := conn.Query("userId")
+		userId := conn.Params("userId")
+		clientId := conn.Query("clientId")
 		username := conn.Query("username")
 		messageState := conn.Query("messageState")
 
-		fmt.Println(roomId, clientId)
+		fmt.Println(userId, clientId)
 
 		wsService := &ws.WsService{
 			Username:     username,
 			Conn:         conn,
-			RoomId:       roomId,
+			UserId:       userId,
 			ClientId:     clientId,
 			Message:      make(chan *ws.Message, 10),
 			MessageState: messageState,
@@ -31,7 +31,7 @@ func JoinRoom(hub *ws.Hub) fiber.Handler {
 			MessageTxt:   "new_client",
 			MessageState: 0,
 			ClientId:     wsService.ClientId,
-			RoomId:       wsService.RoomId,
+			UserId:       wsService.UserId,
 			Username:     username,
 		}
 

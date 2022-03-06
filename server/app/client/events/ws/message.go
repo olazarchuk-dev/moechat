@@ -4,6 +4,6 @@ type Message struct {
 	MessageTxt   string `json:"messageTxt"`
 	MessageState int    `json:"messageState"`
 	ClientId     string `json:"clientId"`
-	RoomId       string `json:"roomId"`
+	UserId       string `json:"userId"`
 	Username     string `json:"username"`
 }

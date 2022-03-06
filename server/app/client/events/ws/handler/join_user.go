@@ -37,8 +37,8 @@ func JoinUser(hub *ws.Hub) fiber.Handler {
 		hub.Register <- wsService
 		hub.Broadcast <- &something
 
-		go wsService.WriteMessage()
-		wsService.ReadMessage(hub)
+		go wsService.WriteSomething()
+		wsService.ReadSomething(hub)
 
 	})
 }

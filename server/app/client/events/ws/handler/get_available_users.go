@@ -31,7 +31,7 @@ func GetAvailableUsers(ctx *fiber.Ctx, hub *ws.Hub) error {
 		BaseResponse: &api.BaseResponse{
 			Success: true,
 			Code:    200,
-			Message: "success get users",
+			Message: "Success get users",
 		},
 		Data: &users,
 	}

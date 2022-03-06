@@ -30,7 +30,7 @@ func GetWsServiceInUser(ctx *fiber.Ctx, hub *ws.Hub) error {
 			BaseResponse: &api.BaseResponse{
 				Success: true,
 				Code:    200,
-				Message: "no WebSocket-Service",
+				Message: "No webSocket-service",
 			},
 			Data: make([]WsServiceInUser, 0),
 		}
@@ -42,7 +42,7 @@ func GetWsServiceInUser(ctx *fiber.Ctx, hub *ws.Hub) error {
 			BaseResponse: &api.BaseResponse{
 				Success: true,
 				Code:    200,
-				Message: "no WebSocket-Service",
+				Message: "No webSocket-service",
 			},
 			Data: make([]WsServiceInUser, 0),
 		}
@@ -61,7 +61,7 @@ func GetWsServiceInUser(ctx *fiber.Ctx, hub *ws.Hub) error {
 		BaseResponse: &api.BaseResponse{
 			Success: true,
 			Code:    200,
-			Message: "success get wsServices this client",
+			Message: "Success get webSocket-service this client",
 		},
 		Data: wsServices,
 	}

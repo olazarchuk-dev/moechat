@@ -8,15 +8,15 @@ import (
 	"github.com/nekonako/moechat/model/api"
 )
 
-func Handler(c *fiber.Ctx, db *sql.DB) error {
-	ctx := context.Background()
+func Handler(ctx *fiber.Ctx, db *sql.DB) error {
+	ctxBg := context.Background()
 	user := new(api.LoginRequest)
 
-	if err := c.BodyParser(user); err != nil {
+	if err := ctx.BodyParser(user); err != nil {
 		panic(err)
 	}
 
-	res := Service(ctx, db, *user)
+	res := Service(ctxBg, db, *user)
 
-	return c.JSON(res)
+	return ctx.JSON(res)
 }

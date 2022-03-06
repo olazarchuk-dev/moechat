@@ -34,7 +34,7 @@ const (
 
 // from webscoket Connections to Hub
 // TODO: Receive something
-func (wsService *WsService) ReadMessage(hub *Hub) {
+func (wsService *WsService) ReadSomething(hub *Hub) {
 	defer func() {
 		hub.Unregister <- wsService
 		wsService.Conn.Close()
@@ -52,22 +52,21 @@ func (wsService *WsService) ReadMessage(hub *Hub) {
 
 		msg := Msg{} // TODO: Msg as (Something...)
 		json.Unmarshal(data, &msg)
-		//fmt.Println("TEST-2  |  messageTxt='" + msg.MessageTxt + "', messageState'" + msg.MessageState + "'")
 
-		formData := Something{
+		something := Something{
 			ClientId:     wsService.ClientId,
 			UserId:       wsService.UserId,
 			Username:     wsService.Username,
 			MessageTxt:   msg.MessageTxt,
 			MessageState: msg.MessageState,
 		}
-		hub.Broadcast <- &formData
+		hub.Broadcast <- &something
 	}
 }
 
 // from Hub to websocket Connection
 // TODO: Send something
-func (wsService *WsService) WriteMessage() {
+func (wsService *WsService) WriteSomething() {
 	defer func() {
 		fmt.Println("Connection was closed")
 	}()

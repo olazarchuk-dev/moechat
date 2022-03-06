@@ -62,7 +62,7 @@ func Service(db *sql.DB, ctx context.Context, request api.RegisterRequest) *api.
 	baseResponse = api.BaseResponse{
 		Success: true,
 		Code:    201,
-		Message: "register is seccess",
+		Message: "Register is success",
 	}
 
 	return &api.RegisterResponse{

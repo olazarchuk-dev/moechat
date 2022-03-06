@@ -15,39 +15,39 @@ type Hub struct {
 func (hub *Hub) Run() {
 	for {
 		select {
-		case client := <-hub.Register:
-			fmt.Println("Register client")
-			if _, isRoomExist := hub.Rooms[client.RoomId]; !isRoomExist {
-				hub.Rooms[client.RoomId] = &Room{
-					RoomId:     client.RoomId,
+		case wsService := <-hub.Register:
+			fmt.Println("Register wsService")
+			if _, isRoomExist := hub.Rooms[wsService.RoomId]; !isRoomExist {
+				hub.Rooms[wsService.RoomId] = &Room{
+					RoomId:     wsService.RoomId,
 					WsServices: make(map[string]*WsService),
 				}
 			}
-			room := hub.Rooms[client.RoomId]
-			if _, isCLientExist := room.WsServices[client.ClientId]; !isCLientExist {
-				room.WsServices[client.ClientId] = client
+			room := hub.Rooms[wsService.RoomId]
+			if _, isCLientExist := room.WsServices[wsService.ClientId]; !isCLientExist {
+				room.WsServices[wsService.ClientId] = wsService
 			}
 
-		case client := <-hub.Unregister:
+		case wsService := <-hub.Unregister:
 
-			if _, isCLientExist := hub.Rooms[client.RoomId].WsServices[client.ClientId]; isCLientExist {
+			if _, isCLientExist := hub.Rooms[wsService.RoomId].WsServices[wsService.ClientId]; isCLientExist {
 				fmt.Println("delete connection")
-				if len(hub.Rooms[client.RoomId].WsServices) != 0 {
+				if len(hub.Rooms[wsService.RoomId].WsServices) != 0 {
 					hub.Broadcast <- &Message{
 						MessageTxt: "disconnect_user",
-						ClientId:   client.ClientId,
-						RoomId:     client.RoomId,
-						Username:   client.Username,
+						ClientId:   wsService.ClientId,
+						RoomId:     wsService.RoomId,
+						Username:   wsService.Username,
 					}
 				}
-				delete(hub.Rooms[client.RoomId].WsServices, client.ClientId)
-				close(client.Message)
+				delete(hub.Rooms[wsService.RoomId].WsServices, wsService.ClientId)
+				close(wsService.Message)
 			}
 
-			// remove room if no one clinet
-			clients := hub.Rooms[client.RoomId].WsServices
-			if len(clients) == 0 {
-				delete(hub.Rooms, client.RoomId)
+			// remove user if no one wsService
+			wsServices := hub.Rooms[wsService.RoomId].WsServices
+			if len(wsServices) == 0 {
+				delete(hub.Rooms, wsService.RoomId)
 			}
 
 		case message := <-hub.Broadcast:

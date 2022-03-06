@@ -34,7 +34,7 @@ func (hub *Hub) Run() {
 				fmt.Println("delete connection")
 				if len(hub.Rooms[wsService.RoomId].WsServices) != 0 {
 					hub.Broadcast <- &Message{
-						MessageTxt: "disconnect_user",
+						MessageTxt: "disconnect_client",
 						ClientId:   wsService.ClientId,
 						RoomId:     wsService.RoomId,
 						Username:   wsService.Username,

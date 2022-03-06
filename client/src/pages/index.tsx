@@ -42,7 +42,7 @@ export default function Index() {
     try {
       setUserName('');
       const res = await createUserService({
-        roomId: uuidv4(),
+        userId: uuidv4(),
         roomName: userName,
       });
       if (res.data) {
@@ -56,7 +56,7 @@ export default function Index() {
 
   const joinUser = (userId: string) => {
     const ws = new WebSocket(
-      `${WEBSOCKET_URL}/${userId}?userId=${client.id}&username=${client.username}` // TODO: set static url-param(s)
+      `${WEBSOCKET_URL}/${userId}?clientId=${client.id}&username=${client.username}` // TODO: set static url-param(s)
     );
     if (ws.OPEN) {
       setConn(ws);
@@ -113,7 +113,7 @@ export default function Index() {
                 <div className="inline-block">
                   <button
                     className="bg-dark-primary px-4 text-yellow border border-yellow rounded-md"
-                    onClick={() => joinUser(user.roomId)}
+                    onClick={() => joinUser(user.userId)}
                   >
                     join
                   </button>

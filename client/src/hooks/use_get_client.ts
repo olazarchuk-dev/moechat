@@ -1,7 +1,7 @@
 import router from 'next/router';
 import { useContext, useEffect, useState } from 'react'
 import { WebSocketContext } from '../modules/websocket_provider';
-import { getClientsInRoom } from '../service/app'
+import { getClientsInUser } from '../service/app'
 
 export const useGetClient = () => {
   const [clients, setClients] = useState([]);
@@ -16,8 +16,8 @@ export const useGetClient = () => {
       return
     }
     const url = conn.url
-    const roomId = url.split('/')
-    getClientsInRoom(roomId[4])
+    const userId = url.split('/')
+    getClientsInUser(userId[4])
       .then((res) => {
         console.log(res.data);
         setClients(res.data.data);

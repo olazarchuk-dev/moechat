@@ -1,9 +1,9 @@
 import { API_URL } from '../constants';
 import { api } from './api';
 
-export const getClientsInRoom = async (roomId: string) => {
+export const getClientsInUser = async (userId: string) => {
   try {
-    const res = await api.get(`${API_URL}/ws/rooms/${roomId}`);
+    const res = await api.get(`${API_URL}/ws/users/${userId}`);
     return Promise.resolve(res);
   } catch (err) {
     console.log(err);

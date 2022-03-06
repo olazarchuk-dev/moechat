@@ -3,8 +3,8 @@ import { api } from './/api';
 import { API_URL } from '../constants';
 
 type User = {
+  userId: string;
   roomName: string;
-  roomId: string;
 };
 
 export async function createUserService(

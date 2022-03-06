@@ -10,9 +10,8 @@ import (
 
 func JoinUser(hub *ws.Hub) fiber.Handler {
 	return websocket.New(func(conn *websocket.Conn) {
-
-		userId := conn.Params("userId")
 		clientId := conn.Query("clientId")
+		userId := conn.Params("userId")
 		username := conn.Query("username")
 		messageState := conn.Query("messageState")
 
@@ -23,11 +22,11 @@ func JoinUser(hub *ws.Hub) fiber.Handler {
 			Conn:         conn,
 			UserId:       userId,
 			ClientId:     clientId,
-			Message:      make(chan *ws.Message, 10),
+			Something:    make(chan *ws.Something, 10),
 			MessageState: messageState,
 		}
 
-		message := ws.Message{
+		something := ws.Something{
 			MessageTxt:   "new_client",
 			MessageState: 0,
 			ClientId:     wsService.ClientId,
@@ -36,7 +35,7 @@ func JoinUser(hub *ws.Hub) fiber.Handler {
 		}
 
 		hub.Register <- wsService
-		hub.Broadcast <- &message
+		hub.Broadcast <- &something
 
 		go wsService.WriteMessage()
 		wsService.ReadMessage(hub)

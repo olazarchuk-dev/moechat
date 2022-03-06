@@ -12,9 +12,9 @@ import (
 type WsService struct {
 	Conn         *websocket.Conn
 	ClientId     string `json:"clientId"`
-	Username     string `json:"username"`
 	UserId       string `json:"userId"`
-	Message      chan *Message
+	Username     string `json:"username"`
+	Something    chan *Something
 	MessageState string `json:"messageState"`
 }
 
@@ -33,7 +33,7 @@ const (
 )
 
 // from webscoket Connections to Hub
-// TODO: Receive message
+// TODO: Receive something
 func (wsService *WsService) ReadMessage(hub *Hub) {
 	defer func() {
 		hub.Unregister <- wsService
@@ -50,35 +50,35 @@ func (wsService *WsService) ReadMessage(hub *Hub) {
 			break
 		}
 
-		msg := Msg{}
+		msg := Msg{} // TODO: Msg as (Something...)
 		json.Unmarshal(data, &msg)
 		//fmt.Println("TEST-2  |  messageTxt='" + msg.MessageTxt + "', messageState'" + msg.MessageState + "'")
 
-		message := Message{
-			MessageTxt:   msg.MessageTxt,
-			MessageState: msg.MessageState,
+		formData := Something{
 			ClientId:     wsService.ClientId,
 			UserId:       wsService.UserId,
 			Username:     wsService.Username,
+			MessageTxt:   msg.MessageTxt,
+			MessageState: msg.MessageState,
 		}
-		hub.Broadcast <- &message
+		hub.Broadcast <- &formData
 	}
 }
 
 // from Hub to websocket Connection
-// TODO: Send message
+// TODO: Send something
 func (wsService *WsService) WriteMessage() {
 	defer func() {
 		fmt.Println("Connection was closed")
 	}()
 	for {
 		select {
-		case message, ok := <-wsService.Message:
+		case something, ok := <-wsService.Something:
 			if !ok {
 				return
 			}
-			fmt.Println(message)
-			wsService.Conn.WriteJSON(message)
+			fmt.Println(something)
+			wsService.Conn.WriteJSON(something)
 		}
 	}
 }

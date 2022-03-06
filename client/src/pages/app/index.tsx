@@ -50,7 +50,7 @@ export default function App() {
         setClients([...clients, { username: message.username }]);
         return;
       }
-      if (message.messageTxt == 'disconnect_user') {
+      if (message.messageTxt == 'disconnect_client') {
         const deleteClient = clients.filter((client) => client.username != message.username);
         setClients([...deleteClient]);
         return;

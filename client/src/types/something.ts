@@ -1,8 +1,8 @@
-export type Message = {
-  messageTxt: string;
-  messageState: number;
+export type Something = {
   clientId: number;
   userId: string;
   username: string;
+  messageTxt: string;
+  messageState: number;
   type: 'recv' | 'self';
 };

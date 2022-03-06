@@ -7,7 +7,7 @@ import (
 
 type MyUser struct {
 	UserId   string
-	RoomName string
+	UserName string
 }
 
 func CreateUser(ctx *fiber.Ctx, hub *ws.Hub) error {
@@ -20,7 +20,7 @@ func CreateUser(ctx *fiber.Ctx, hub *ws.Hub) error {
 
 	hub.Users[myUser.UserId] = &ws.User{
 		UserId:     myUser.UserId,
-		RoomName:   myUser.RoomName,
+		UserName:   myUser.UserName,
 		WsServices: make(map[string]*ws.WsService),
 	}
 

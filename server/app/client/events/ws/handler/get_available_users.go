@@ -13,7 +13,7 @@ type Res struct {
 
 type UserList struct {
 	UserId   string `json:"userId"`
-	RoomName string `json:"roomName"`
+	UserName string `json:"userName"`
 }
 
 func GetAvailableUsers(ctx *fiber.Ctx, hub *ws.Hub) error {
@@ -23,7 +23,7 @@ func GetAvailableUsers(ctx *fiber.Ctx, hub *ws.Hub) error {
 	for _, user := range hub.Users {
 		users = append(users, UserList{
 			UserId:   user.UserId,
-			RoomName: user.RoomName,
+			UserName: user.UserName,
 		})
 	}
 

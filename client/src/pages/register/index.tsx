@@ -9,7 +9,7 @@ export default function Register() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
+  const [something, setSomething] = useState('');
   const [loading, setLoading] = useState(false)
 
   const onUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,7 +37,7 @@ export default function Register() {
       e.preventDefault();
       setLoading(true)
       if (confirmPassword !== password) {
-        setMessage('wrong confirm password');
+        setSomething('wrong confirm password');
         return;
       }
 
@@ -49,7 +49,7 @@ export default function Register() {
       };
 
       if (username == '' || password == '' || email == '') {
-        setMessage('Form must be filled');
+        setSomething('Form must be filled');
         setLoading(false)
         return
       }
@@ -61,10 +61,10 @@ export default function Register() {
         return router.push('/login');
       }
 
-      setMessage(res.data.message);
+      setSomething(res.data.message);
     } catch (err) {
       console.log(err);
-      setMessage('something wrong');
+      setSomething('something wrong');
       setLoading(false)
     }
   };
@@ -97,7 +97,7 @@ export default function Register() {
               onChange={onConfirmPassword}
             />
             <span className="text-red mt-4 bg-red bg-opacity-10 pl-4 rounded-md">
-              {message}
+              {something}
             </span>
             <button
               onClick={submit}

@@ -8,7 +8,7 @@ import Spinner from '../../component/spinner';
 export default function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [message, setMessage] = useState('');
+  const [something, setSomething] = useState('');
   const [loading, setLoading] = useState(false);
 
   const onUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,11 +40,11 @@ export default function Login() {
       }
 
       setLoading(false);
-      setMessage(res.data.message);
+      setSomething(res.data.message);
     } catch (err) {
       setLoading(false);
       console.log(err);
-      setMessage('something wrong');
+      setSomething('something wrong');
     }
   };
 
@@ -65,7 +65,7 @@ export default function Login() {
               onChange={onPassword}
             />
             <span className="text-red mt-4 bg-red bg-opacity-10 pl-4 rounded-md">
-              {message}
+              {something}
             </span>
             <button
               onClick={submit}

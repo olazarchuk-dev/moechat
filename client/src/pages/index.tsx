@@ -12,7 +12,7 @@ import { ClientInfo } from '../types/client_info';
 
 export default function Index() {
   const [users, setUsers] = useState([]);
-  const [message, setMessage] = useState('');
+  const [something, setSomething] = useState('');
   const [userName, setUserName] = useState('');
   const { setConn } = useContext(WebSocketContext);
   const { client, setClient } = useContext(AuthContext);
@@ -25,7 +25,7 @@ export default function Index() {
       }
     } catch (err) {
       console.log(err);
-      setMessage('something wrong when getting users');
+      setSomething('something wrong when getting users');
     }
   };
 
@@ -50,7 +50,7 @@ export default function Index() {
       }
     } catch (err) {
       console.log(err);
-      setMessage('something wrong');
+      setSomething('something wrong');
     }
   };
 
@@ -77,9 +77,9 @@ export default function Index() {
         <div className="flex justify-center">
           <div className="w-96 rounded-md bg-dark-secondary">
             <div className="mt-3 text-center">
-              {message && (
+              {something && (
                 <div className="mb-3 bg-red bg-opacity-10 p-2 rounded-md text-red">
-                  {message}
+                  {something}
                 </div>
               )}
               <input

@@ -25,7 +25,7 @@ import Loading from '../../component/loading';
  */
 
 export default function App() {
-  const [messages, setMessages] = useState<Array<Something>>([]);
+  const [somethings, setSomethings] = useState<Array<Something>>([]);
   const textareaVal = useRef(null); // TODO: locale Textarea
   const [rangeVal, setRangeVal] = useState({values: [0]}); // TODO: locale Range
   const syncRangeVal = useRef({values: [0]});              // TODO: sync remote Range
@@ -44,23 +44,23 @@ export default function App() {
     }
 
     conn.onmessage = (msg) => { // TODO: receive remote Something(s)
-      const message: Something = JSON.parse(msg.data);
+      const something: Something = JSON.parse(msg.data);
 
-      if (message.messageTxt == 'new_client') {
-        setClients([...clients, { username: message.username }]);
+      if (something.messageTxt == 'new_client') {
+        setClients([...clients, { username: something.username }]);
         return;
       }
-      if (message.messageTxt == 'disconnect_client') {
-        const deleteClient = clients.filter((client) => client.username != message.username);
+      if (something.messageTxt == 'disconnect_client') {
+        const deleteClient = clients.filter((client) => client.username != something.username);
         setClients([...deleteClient]);
         return;
       }
-      client.id == message.clientId ? (message.type = 'recv') : (message.type = 'self');
+      client.id == something.clientId ? (something.type = 'recv') : (something.type = 'self');
 
-      setRangeVal({values: [message.messageState]});  // 2.1 после этого мы создаем состояние для хранения начального значения
-      syncRangeVal.current.values = [message.messageState]; // 2.2 после этого мы создаем состояние для хранения начального значения
-      setMessages([...messages, message]);
-      console.log('<<< messages:', messages)
+      setRangeVal({values: [something.messageState]});  // 2.1 после этого мы создаем состояние для хранения начального значения
+      syncRangeVal.current.values = [something.messageState]; // 2.2 после этого мы создаем состояние для хранения начального значения
+      setSomethings([...somethings, something]);
+      console.log('<<< somethings:', somethings)
     };
 
     conn.onclose = (conn) => {
@@ -74,9 +74,9 @@ export default function App() {
     conn.onopen = (conn) => {
       setConnStatus('connected');
     };
-  }, [textareaVal, messages, conn, clients]);
+  }, [textareaVal, somethings, conn, clients]);
 
-  const sendMessage = () => {
+  const sendSomething = () => {
     let data = {
       messageTxt: textareaVal.current.value,
       messageState: syncRangeVal.current.values[0]
@@ -117,9 +117,9 @@ export default function App() {
                   backgroundColor: '#312b2b',
                   height: '780px'
                 }}
-                onChange={sendMessage}>
+                onChange={sendSomething}>
               </textarea>
-              <SyncTextarea messages={messages} syncTextareaVal={textareaVal} />
+              <SyncTextarea somethings={somethings} syncTextareaVal={textareaVal} />
             </div>
 
             {/* 3. затем мы добавляем наш компонент Range */}
@@ -135,7 +135,7 @@ export default function App() {
                     (values) => {
                         setRangeVal({values});
                         syncRangeVal.current.values = values;
-                        sendMessage();
+                        sendSomething();
                     }
                 }
 
@@ -175,7 +175,7 @@ export default function App() {
         </div>
         <div className="md:w-3/12 md:visible invisible flex flex-col border-l-2 border-dark-secondary p-4">
           <div className="fixed">
-            <OnCloseConnection reconnect={reconnect} message={connStatus} />
+            <OnCloseConnection reconnect={reconnect} something={connStatus} />
             <div className="text-lg font-bold mb-4">online</div>
             {clients.map((client, index) => (
               <div
@@ -192,7 +192,7 @@ export default function App() {
   );
 }
 
-export function OnCloseConnection({ reconnect, message }) {
+export function OnCloseConnection({ reconnect, something }) {
   const disconectStyel =
     'px-4 flex flex-row justify-end w-full bg-red bg-opacity-10 text-red rounded-md';
   const connectedStyle =
@@ -201,11 +201,11 @@ export function OnCloseConnection({ reconnect, message }) {
     <div className="inline-block mb-4">
       <div
         className={
-          message.includes('disconnected') ? disconectStyel : connectedStyle
+            something.includes('disconnected') ? disconectStyel: connectedStyle
         }
       >
-        <div>{message}</div>
-        {message.includes('disconnected') && (
+        <div>{something}</div>
+        {something.includes('disconnected') && (
           <div>
             <button
               className="px-2 ml-4 bg-dark-secondary border-red border rounded-md"

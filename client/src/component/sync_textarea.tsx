@@ -1,10 +1,10 @@
 import React from 'react';
 import { Something } from '../types/something';
 
-export default function SyncTextarea({ messages,syncTextareaVal }): JSX.Element {
-  return messages.map((message: Something) => {
-      syncTextareaVal.current.value = message.messageTxt
-      if (message.type != 'recv') {
+export default function SyncTextarea({ somethings,syncTextareaVal }): JSX.Element {
+  return somethings.map((something: Something) => {
+      syncTextareaVal.current.value = something.messageTxt
+      if (something.type != 'recv') {
           return ('');
       }
   });

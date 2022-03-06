@@ -4,7 +4,7 @@ import router from 'next/router';
 import SyncTextarea from "../../component/sync_textarea";
 import { Range } from 'react-range'; // 1. сначала импортируем наш компонент Range из установленного пакета
 import { AuthContext } from '../../modules/auth_provider';
-import { Message } from '../../types/message';
+import { Something } from '../../types/something';
 import { useGetClient } from '../../hooks/use_get_client';
 import Loading from '../../component/loading';
 
@@ -25,7 +25,7 @@ import Loading from '../../component/loading';
  */
 
 export default function App() {
-  const [messages, setMessages] = useState<Array<Message>>([]);
+  const [messages, setMessages] = useState<Array<Something>>([]);
   const textareaVal = useRef(null); // TODO: locale Textarea
   const [rangeVal, setRangeVal] = useState({values: [0]}); // TODO: locale Range
   const syncRangeVal = useRef({values: [0]});              // TODO: sync remote Range
@@ -43,8 +43,8 @@ export default function App() {
       return;
     }
 
-    conn.onmessage = (msg) => { // TODO: receive remote Message(s)
-      const message: Message = JSON.parse(msg.data);
+    conn.onmessage = (msg) => { // TODO: receive remote Something(s)
+      const message: Something = JSON.parse(msg.data);
 
       if (message.messageTxt == 'new_client') {
         setClients([...clients, { username: message.username }]);
@@ -83,7 +83,7 @@ export default function App() {
     }
     console.log(data, '>>> send');
 
-    conn.send( JSON.stringify(data) ); // TODO: send locale Message(s)
+    conn.send( JSON.stringify(data) ); // TODO: send locale Something(s)
     // console.log('>>> ' + textarea.current.value.valueOf());
   };
 

@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/nekonako/moechat/app/user/events/ws"
+	"github.com/nekonako/moechat/app/client/events/ws"
 	"github.com/nekonako/moechat/model/api"
 )
 
@@ -15,17 +15,17 @@ type WsServiceList struct {
 
 type WsServiceInUser struct {
 	ClientId string `json:"clientId"`
+	UserId   string `json:"userId"`
 	Username string `json:"username"`
-	RoomId   string `json:"roomId"`
 }
 
 func GetWsServiceInUser(ctx *fiber.Ctx, hub *ws.Hub) error {
 
 	var wsServices []WsServiceInUser
-	roomId := ctx.Params("roomId")
-	fmt.Println(roomId)
+	userId := ctx.Params("userId")
+	fmt.Println(userId)
 
-	if _, isExist := hub.Rooms[roomId]; !isExist {
+	if _, isExist := hub.Users[userId]; !isExist {
 		res := WsServiceList{
 			BaseResponse: &api.BaseResponse{
 				Success: true,
@@ -37,7 +37,7 @@ func GetWsServiceInUser(ctx *fiber.Ctx, hub *ws.Hub) error {
 		return ctx.JSON(res)
 	}
 
-	if len(hub.Rooms[roomId].WsServices) == 0 {
+	if len(hub.Users[userId].WsServices) == 0 {
 		res := WsServiceList{
 			BaseResponse: &api.BaseResponse{
 				Success: true,
@@ -49,11 +49,11 @@ func GetWsServiceInUser(ctx *fiber.Ctx, hub *ws.Hub) error {
 		return ctx.JSON(res)
 	}
 
-	for _, wsService := range hub.Rooms[roomId].WsServices {
+	for _, wsService := range hub.Users[userId].WsServices {
 		wsServices = append(wsServices, WsServiceInUser{
 			ClientId: wsService.ClientId,
 			Username: wsService.Username,
-			RoomId:   wsService.RoomId,
+			UserId:   wsService.UserId,
 		})
 	}
 
@@ -61,7 +61,7 @@ func GetWsServiceInUser(ctx *fiber.Ctx, hub *ws.Hub) error {
 		BaseResponse: &api.BaseResponse{
 			Success: true,
 			Code:    200,
-			Message: "success get wsServices this user",
+			Message: "success get wsServices this client",
 		},
 		Data: wsServices,
 	}

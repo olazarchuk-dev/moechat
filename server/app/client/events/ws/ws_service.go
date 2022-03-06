@@ -13,7 +13,7 @@ type WsService struct {
 	Conn         *websocket.Conn
 	ClientId     string `json:"clientId"`
 	Username     string `json:"username"`
-	RoomId       string `json:"roomId"`
+	UserId       string `json:"userId"`
 	Message      chan *Message
 	MessageState string `json:"messageState"`
 }
@@ -58,7 +58,7 @@ func (wsService *WsService) ReadMessage(hub *Hub) {
 			MessageTxt:   msg.MessageTxt,
 			MessageState: msg.MessageState,
 			ClientId:     wsService.ClientId,
-			RoomId:       wsService.RoomId,
+			UserId:       wsService.UserId,
 			Username:     wsService.Username,
 		}
 		hub.Broadcast <- &message

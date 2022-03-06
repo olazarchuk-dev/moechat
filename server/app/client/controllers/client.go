@@ -5,11 +5,11 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 
+	"github.com/nekonako/moechat/app/client/events/login"
+	"github.com/nekonako/moechat/app/client/events/register"
+	"github.com/nekonako/moechat/app/client/events/ws"
+	"github.com/nekonako/moechat/app/client/events/ws/handler"
 	"github.com/nekonako/moechat/app/middleware"
-	"github.com/nekonako/moechat/app/user/events/login"
-	"github.com/nekonako/moechat/app/user/events/register"
-	"github.com/nekonako/moechat/app/user/events/ws"
-	"github.com/nekonako/moechat/app/user/events/ws/handler"
 )
 
 func Init(app *fiber.App, db *sql.DB) {
@@ -17,11 +17,11 @@ func Init(app *fiber.App, db *sql.DB) {
 	hub := ws.NewHub()
 	go hub.Run()
 
-	app.Get("/ws/rooms/:roomId", func(c *fiber.Ctx) error {
+	app.Get("/ws/users/:userId", func(c *fiber.Ctx) error {
 		return handler.GetWsServiceInUser(c, hub)
 	})
 
-	app.Get("/ws/:roomId", handler.JoinRoom(hub))
+	app.Get("/ws/:userId", handler.JoinUser(hub))
 
 	app.Post("/register", func(c *fiber.Ctx) error {
 		return register.Handler(c, db)
@@ -32,11 +32,11 @@ func Init(app *fiber.App, db *sql.DB) {
 	})
 
 	app.Post("/ws", middleware.JWTAuth, func(c *fiber.Ctx) error {
-		return handler.CreateRoom(c, hub)
+		return handler.CreateUser(c, hub)
 	})
 
 	app.Get("/ws", func(c *fiber.Ctx) error {
-		return handler.GetAvailableRooms(c, hub)
+		return handler.GetAvailableUsers(c, hub)
 	})
 
 }

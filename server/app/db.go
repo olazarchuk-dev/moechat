@@ -22,7 +22,7 @@ func DbConn() *sql.DB {
 		log.Fatal(err)
 	}
 
-	db, err := sql.Open("postgres", fmt.Sprintf("host=%s user=%s password=%s port=%s dbname=%s sslmode=disable", config.DbHost, config.DbUser, config.DbPassword, config.DbPort, config.DbName))
+	db, err := sql.Open("postgres", fmt.Sprintf("host=%s client=%s password=%s port=%s dbname=%s sslmode=disable", config.DbHost, config.DbUser, config.DbPassword, config.DbPort, config.DbName))
 
 	if err != nil {
 		log.Fatal(err)

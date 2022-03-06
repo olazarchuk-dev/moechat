@@ -43,7 +43,7 @@ export default function Index() {
       setUserName('');
       const res = await createUserService({
         userId: uuidv4(),
-        roomName: userName,
+        userName: userName,
       });
       if (res.data) {
         getUsers();
@@ -107,7 +107,7 @@ export default function Index() {
                 <div className="w-full">
                   <div className="text-sm">username</div>
                   <div className="text-yellow font-bold text-lg">
-                    {user.roomName}
+                    {user.userName}
                   </div>
                 </div>
                 <div className="inline-block">

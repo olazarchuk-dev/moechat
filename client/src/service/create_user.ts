@@ -4,7 +4,7 @@ import { API_URL } from '../constants';
 
 type User = {
   userId: string;
-  roomName: string;
+  userName: string;
 };
 
 export async function createUserService(

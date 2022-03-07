@@ -56,7 +56,7 @@ func (hub *Hub) Run() {
 					if client.UserId == something.UserId {
 						client.Something <- something // TODO: MessageTxt, MessageState, ClientId, UserId, Username
 						//fmt.Println(something)
-						fmt.Println("Receive <<<  User_ID = '" + something.UserId + "'  |  Client_ID = '" + something.Username + "'  |  FormData_TXT = '" + something.MessageTxt + "'  |  FormData_STATE = " + strconv.Itoa(something.MessageState))
+						fmt.Println("Receive <<<  User_ID (Username) = '" + something.UserId + "'  |  Client_ID (Client_NAME) = '" + something.Username + "'  |  Something_TXT = '" + something.MessageTxt + "'  |  Something_STATE = " + strconv.Itoa(something.MessageState))
 					}
 				}
 

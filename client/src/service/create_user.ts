@@ -2,16 +2,15 @@ import { AxiosResponse } from 'axios';
 import { api } from './/api';
 import { API_URL } from '../constants';
 
-type User = {
-  userId: string;
-  userName: string;
+type User = { // TODO: JoinUser
+  username: string;
 };
 
 export async function createUserService(
-  data: User
+  user: User
 ): Promise<AxiosResponse<any, any>> {
   try {
-    const res = await api.post(`${API_URL}/ws`, data);
+    const res = await api.post(`${API_URL}/ws`, user);
     return Promise.resolve(res);
   } catch (err) {
     return Promise.reject(err);

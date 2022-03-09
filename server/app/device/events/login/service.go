@@ -14,11 +14,11 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-type MyJwtClaims struct {
+type JwtClaims struct { // TODO: JwtClaims User
 	jwt.StandardClaims
-	Username string `json:"username"`
-	Email    string `json:"email"`
-	Id       int    `json:"id"`
+	Id         int    `json:"id"`
+	Email      string `json:"email"`
+	DeviceName string `json:"deviceName"`
 }
 
 var (
@@ -34,10 +34,8 @@ func Service(ctx context.Context, db *sql.DB, request api.LoginRequest) *api.Log
 	helper.PanicErr(err)
 	defer helper.RollbackErr(tx)
 
-	//fmt.Println(request)
-
 	var baseResponse api.BaseResponse
-	result, errQuery := Repository(ctx, tx, request.Username)
+	result, errQuery := Repository(ctx, tx, request)
 
 	if errQuery != nil {
 
@@ -66,10 +64,8 @@ func Service(ctx context.Context, db *sql.DB, request api.LoginRequest) *api.Log
 
 	}
 
-	fmt.Println(result.Password)
 	errComparePass := bcrypt.CompareHashAndPassword([]byte(result.Password), []byte(request.Password))
 	if errComparePass != nil {
-		fmt.Println(result.Password)
 		return &api.LoginResponse{
 			BaseResponse: &api.BaseResponse{
 				Success: false,
@@ -85,24 +81,24 @@ func Service(ctx context.Context, db *sql.DB, request api.LoginRequest) *api.Log
 		Message: "Login is success",
 	}
 
-	accessTokenClaims := MyJwtClaims{
+	accessTokenClaims := JwtClaims{
 		StandardClaims: jwt.StandardClaims{
 			Issuer:    APP_NAME,
 			ExpiresAt: time.Now().Add(JWT_ACCESS_TOKEN_EXPIRED).Unix(),
 		},
-		Username: result.Username,
-		Email:    result.Email,
-		Id:       result.Id,
+		DeviceName: result.DeviceName,
+		Email:      result.Email,
+		Id:         result.Id,
 	}
 
-	refreshTokenClaims := MyJwtClaims{
+	refreshTokenClaims := JwtClaims{
 		StandardClaims: jwt.StandardClaims{
 			Issuer:    APP_NAME,
 			ExpiresAt: time.Now().Add(JWT_ACCESS_TOKEN_EXPIRED).Unix(),
 		},
-		Username: result.Username,
-		Email:    result.Email,
-		Id:       result.Id,
+		DeviceName: result.DeviceName,
+		Email:      result.Email,
+		Id:         result.Id,
 	}
 
 	accessToken := jwt.NewWithClaims(JWT_SIGNING_METHOD, accessTokenClaims)

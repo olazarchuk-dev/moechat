@@ -5,7 +5,7 @@ import SyncTextarea from "../../component/sync_textarea";
 import { Range } from 'react-range'; // 1. сначала импортируем наш компонент Range из установленного пакета
 import { AuthContext } from '../../modules/auth_provider';
 import { Something } from '../../types/something';
-import { useGetClient } from '../../hooks/use_get_client';
+import { useGetDevices } from '../../hooks/use_get_devices';
 import Loading from '../../component/loading';
 
 /**
@@ -30,37 +30,37 @@ export default function App() {
   const [rangeVal, setRangeVal] = useState({values: [0]}); // TODO: locale Range
   const syncRangeVal = useRef({values: [0]});              // TODO: sync remote Range
   const { conn, setConn } = useContext(WebSocketContext);
-  const { client } = useContext(AuthContext);
+  const { jwtClaims } = useContext(AuthContext);
   const [connStatus, setConnStatus] = useState('');
-
-  const { clients, setClients } = useGetClient();
+  const { devices, setDevices } = useGetDevices();
 
   useEffect(() => {
-    console.log(client);
+    console.log(" ...app.useEffect: jwtClaims <<<", jwtClaims);
 
     if (conn === null) {
       router.push('/');
       return;
     }
 
-    conn.onmessage = (msg) => { // TODO: receive remote Something(s)
-      const something: Something = JSON.parse(msg.data);
+    conn.onmessage = (some) => { // TODO: receive remote Something(s) | sync some (MessageEvent)
+      const something: Something = JSON.parse(some.data);
 
-      if (something.messageTxt == 'new_client') {
-        setClients([...clients, { username: something.username }]);
+      if (something.appTextarea == 'new_device') {
+          setDevices([...devices, { deviceName: something.deviceName }]); // TODO: sync online device(s) by connected
         return;
       }
-      if (something.messageTxt == 'disconnect_client') {
-        const deleteClient = clients.filter((client) => client.username != something.username);
-        setClients([...deleteClient]);
+      if (something.appTextarea == 'disconnect_device') {
+        const deleteDevice = devices.filter((device) => device.deviceName != something.deviceName);
+        setDevices([...deleteDevice]);
         return;
       }
-      client.id == something.clientId ? (something.type = 'recv') : (something.type = 'self');
+      jwtClaims.id == something.id ? (something.type = 'recv') : (something.type = 'self');
 
-      setRangeVal({values: [something.messageState]});  // 2.1 после этого мы создаем состояние для хранения начального значения
-      syncRangeVal.current.values = [something.messageState]; // 2.2 после этого мы создаем состояние для хранения начального значения
+      setRangeVal({values: [something.appRange]});  // 2.1 после этого мы создаем состояние для хранения начального значения
+      syncRangeVal.current.values = [something.appRange]; // 2.2 после этого мы создаем состояние для хранения начального значения
       setSomethings([...somethings, something]);
-      console.log('<<< somethings:', somethings)
+
+      console.log(' ...app.receive: somethings <<<', somethings)
     };
 
     conn.onclose = (conn) => {
@@ -74,17 +74,16 @@ export default function App() {
     conn.onopen = (conn) => {
       setConnStatus('connected');
     };
-  }, [textareaVal, somethings, conn, clients]);
+  }, [textareaVal, somethings, conn, devices]);
 
   const sendSomething = () => {
     let data = {
-      messageTxt: textareaVal.current.value,
-      messageState: syncRangeVal.current.values[0]
+      appTextarea: textareaVal.current.value,
+      appRange: syncRangeVal.current.values[0]
     }
-    console.log(data, '>>> send');
+    console.log(' ...app.send: data (somethings) >>>', data);
 
     conn.send( JSON.stringify(data) ); // TODO: send locale Something(s)
-    // console.log('>>> ' + textarea.current.value.valueOf());
   };
 
   const reconnect = () => {
@@ -94,11 +93,13 @@ export default function App() {
     const ws = new WebSocket(conn.url);
     if (ws.OPEN) {
       setConn(ws);
-      setClients([]);
+      setDevices([]);
     }
   };
 
-  if (clients === [] || conn === null) <Loading></Loading>;
+  if (devices === [] || conn === null) <Loading />;
+
+  console.log(JSON.stringify(" ...app: devices <<<", devices))
 
   return (
       <div className="flex flex-col md:flex-row w-full">
@@ -176,14 +177,13 @@ export default function App() {
         <div className="md:w-3/12 md:visible invisible flex flex-col border-l-2 border-dark-secondary p-4">
           <div className="fixed">
             <OnCloseConnection reconnect={reconnect} something={connStatus} />
-            <div className="text-lg font-bold mb-4">online</div>
-            {clients.map((client, index) => (
+            <div className="text-lg font-bold mb-4">online device(s)</div>
+            {devices.map((device, index) => (
               <div
                 key={index}
-                className="flex flex-row items-center h-full min-w-full ml-4"
-              >
+                className="flex flex-row items-center h-full min-w-full ml-4">
                 <div className="h-3 bg-green w-3 mr-4 items-center rounded-full"></div>
-                <div>{client.username}</div>
+                <div>{device.deviceName}</div>
               </div>
             ))}
           </div>

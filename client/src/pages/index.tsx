@@ -1,4 +1,4 @@
-import { getUserService } from '../service/get_users';
+import { getAvailableUsersService } from '../service/get_available_users';
 import Loading from '../component/loading';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
@@ -8,18 +8,20 @@ import { WebSocketContext } from '../modules/websocket_provider';
 import router from 'next/router';
 import { AuthContext } from '../modules/auth_provider';
 import jwtDecode from 'jwt-decode';
-import { ClientInfo } from '../types/client_info';
+import { JwtClaims } from '../types/jwt_claims';
 
 export default function Index() {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState([]); // TODO: JoinUser
   const [something, setSomething] = useState('');
-  const [userName, setUserName] = useState('');
+  const [username, setUsername] = useState('');
   const { setConn } = useContext(WebSocketContext);
-  const { client, setClient } = useContext(AuthContext);
+  const { jwtClaims, setJwtClaims } = useContext(AuthContext); // TODO: JwtClaims User
 
   const getUsers = async () => {
     try {
-      const res = await getUserService();
+      const res = await getAvailableUsersService();
+      console.log(JSON.stringify( res.data.data ))
+
       if (res.data.data) {
         setUsers(res.data.data);
       }
@@ -33,17 +35,16 @@ export default function Index() {
     getUsers();
     const token = localStorage.getItem('access_token');
     if (token) {
-      const jwt: ClientInfo = jwtDecode(token);
-      setClient(jwt);
+      const jwtClaims: JwtClaims = jwtDecode(token);
+      setJwtClaims(jwtClaims);
     }
   }, []);
 
   const submit = async () => {
     try {
-      setUserName('');
-      const res = await createUserService({
-        userId: uuidv4(),
-        userName: userName,
+      setUsername('');
+      const res = await createUserService({ // TODO: JoinUser
+        username: username,
       });
       if (res.data) {
         getUsers();
@@ -54,9 +55,9 @@ export default function Index() {
     }
   };
 
-  const joinUser = (userId: string) => {
+  const joinUser = (username: string) => {
     const ws = new WebSocket(
-      `${WEBSOCKET_URL}/${userId}?clientId=${client.id}&username=${client.username}` // TODO: set static url-param(s)
+        `${WEBSOCKET_URL}/${username}?id=${jwtClaims.id}&deviceName=${jwtClaims.deviceName}` // TODO: set static data from url-param(s)
     );
     if (ws.OPEN) {
       setConn(ws);
@@ -66,10 +67,10 @@ export default function Index() {
 
   const onUserChange = (e) => {
     const value = e.target.value;
-    setUserName(value);
+    setUsername(value);
   };
 
-  if (users === [] || client === null) return <Loading />;
+  if (users === [] || jwtClaims === null) return <Loading />;
 
   return (
     <>
@@ -107,13 +108,13 @@ export default function Index() {
                 <div className="w-full">
                   <div className="text-sm">username</div>
                   <div className="text-yellow font-bold text-lg">
-                    {user.userName}
+                    {user.username}
                   </div>
                 </div>
                 <div className="inline-block">
                   <button
                     className="bg-dark-primary px-4 text-yellow border border-yellow rounded-md"
-                    onClick={() => joinUser(user.userId)}
+                    onClick={() => joinUser(user.username)}
                   >
                     join
                   </button>

@@ -10,12 +10,12 @@ import (
 	"github.com/nekonako/moechat/model/api"
 )
 
-func JWTAuth(c *fiber.Ctx) error {
+func JWTAuth(ctx *fiber.Ctx) error {
 
-	authHeader := c.Get("Authorization", "")
+	authHeader := ctx.Get("Authorization", "")
 
 	if !strings.Contains(authHeader, "Bearer") || authHeader == "" {
-		return c.JSON(api.BaseResponse{
+		return ctx.JSON(api.BaseResponse{
 			Success: false,
 			Code:    401,
 			Message: "invalid headers authorization",
@@ -26,7 +26,7 @@ func JWTAuth(c *fiber.Ctx) error {
 
 	config, errConfig := config.LoadConfig()
 	if errConfig != nil {
-		return c.JSON(api.BaseResponse{
+		return ctx.JSON(api.BaseResponse{
 			Success: false,
 			Code:    400,
 			Message: "error when read config",
@@ -43,7 +43,7 @@ func JWTAuth(c *fiber.Ctx) error {
 	})
 
 	if err != nil {
-		return c.JSON(api.BaseResponse{
+		return ctx.JSON(api.BaseResponse{
 			Success: false,
 			Code:    400,
 			Message: "Invalid jsonwebtoken",
@@ -52,15 +52,15 @@ func JWTAuth(c *fiber.Ctx) error {
 
 	claims, ok := token.Claims.(jwt.MapClaims)
 	if !ok || !token.Valid {
-		return c.JSON(api.BaseResponse{
+		return ctx.JSON(api.BaseResponse{
 			Success: false,
 			Code:    400,
 			Message: "jsonapitoken invalid signature",
 		})
 	}
 
-	c.Locals("jwt", claims)
+	ctx.Locals("jwt", claims)
 
-	return c.Next()
+	return ctx.Next()
 
 }

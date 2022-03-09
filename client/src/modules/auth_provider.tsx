@@ -2,24 +2,24 @@ import jwtDecode from 'jwt-decode';
 import { useRouter } from 'next/router';
 import { decode } from 'punycode';
 import { createContext, useEffect, useState } from 'react';
-import { ClientInfo } from '../types/client_info';
+import { JwtClaims } from '../types/jwt_claims';
 
 export const AuthContext = createContext<{
   isAuthentcate: boolean;
   setAuthenticate: (auth: boolean) => void;
-  client: ClientInfo | null;
-  setClient: (client: ClientInfo) => void;
+  jwtClaims: JwtClaims | null;
+  setJwtClaims: (jwtClaims: JwtClaims) => void;
 }>({
   isAuthentcate: false,
   setAuthenticate: () => {},
-  client: null,
-  setClient: () => {},
+  jwtClaims: null,
+  setJwtClaims: () => {},
 });
 
 export const AuthContextProvider = ({ children }) => {
   const router = useRouter();
   const [isAuthentcate, setAuthenticate] = useState(false);
-  const [client, setClient] = useState<ClientInfo>(null);
+  const [user, setUser] = useState<JwtClaims>(null);
 
   useEffect(() => {
     const token = localStorage.getItem('access_token'); 
@@ -31,12 +31,13 @@ export const AuthContextProvider = ({ children }) => {
       //return;
     }
 
-    const decode: ClientInfo = jwtDecode(token);
-    if (token && decode) {
-      setClient({
-        email: decode.email,
-        username: decode.username,
-        id: decode.id,
+    const jwtClaimsDecode: JwtClaims = jwtDecode(token);
+    console.debug(JSON.stringify(jwtClaimsDecode))
+    if (token && jwtClaimsDecode) {
+      setUser({
+        id: jwtClaimsDecode.id,
+        email: jwtClaimsDecode.email,
+        deviceName: jwtClaimsDecode.deviceName,
       });
       setAuthenticate(true);
     }
@@ -49,8 +50,8 @@ export const AuthContextProvider = ({ children }) => {
         value={{
           isAuthentcate: isAuthentcate,
           setAuthenticate: setAuthenticate,
-          client: client,
-          setClient: setClient,
+          jwtClaims: user,
+          setJwtClaims: setUser,
         }}
       >
         {children}

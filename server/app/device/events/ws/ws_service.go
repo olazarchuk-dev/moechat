@@ -9,13 +9,12 @@ import (
 	"github.com/gofiber/websocket/v2"
 )
 
-type WsService struct {
-	Conn         *websocket.Conn
-	ClientId     string `json:"clientId"`
-	UserId       string `json:"userId"`
-	Username     string `json:"username"`
-	Something    chan *Something
-	MessageState string `json:"messageState"`
+type WsService struct { // TODO: init static data
+	Conn       *websocket.Conn
+	Id         string `json:"id"`
+	Username   string `json:"username"`
+	DeviceName string `json:"deviceName"`
+	Something  chan *Something
 }
 
 const (
@@ -44,21 +43,21 @@ func (wsService *WsService) ReadSomething(hub *Hub) {
 		_, data, err := wsService.Conn.ReadMessage()
 		if err != nil {
 			fmt.Println(err)
-			if strings.Contains(err.Error(), "websocket: close") {
+			if strings.Contains(err.Error(), "Websocket: close") {
 				fmt.Println("close Connection")
 			}
 			break
 		}
 
-		msg := Msg{} // TODO: Msg as (Something...)
-		json.Unmarshal(data, &msg)
+		some := Something{} // TODO: sync some (MessageEvent)
+		json.Unmarshal(data, &some)
 
 		something := Something{
-			ClientId:     wsService.ClientId,
-			UserId:       wsService.UserId,
-			Username:     wsService.Username,
-			MessageTxt:   msg.MessageTxt,
-			MessageState: msg.MessageState,
+			Id:          wsService.Id,
+			Username:    wsService.Username,
+			DeviceName:  wsService.DeviceName,
+			AppTextarea: some.AppTextarea,
+			AppRange:    some.AppRange,
 		}
 		hub.Broadcast <- &something
 	}

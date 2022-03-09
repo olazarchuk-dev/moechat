@@ -1,20 +1,20 @@
 import router from 'next/router';
 import { useState } from 'react';
-import { Client } from '../../types/client';
+import { User } from '../../types/user';
 import { registerService } from '../../service/register';
 import Spinner from '../../component/spinner'
 
 export default function Register() {
-  const [username, setUsername] = useState('');
+  const [deviceName, setDeviceName] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [email, setEmail] = useState('');
   const [something, setSomething] = useState('');
   const [loading, setLoading] = useState(false)
 
-  const onUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onDeviceName = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setUsername(value);
+    setDeviceName(value);
   };
 
   const onPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,14 +41,14 @@ export default function Register() {
         return;
       }
 
-      const user: Client = {
-        username: username,
+      const user: User = {
+        deviceName: deviceName,
         password: password,
         email: email,
         image: '',
       };
 
-      if (username == '' || password == '' || email == '') {
+      if (deviceName == '' || password == '' || email == '') {
         setSomething('Form must be filled');
         setLoading(false)
         return
@@ -76,8 +76,8 @@ export default function Register() {
           <form className="flex flex-col py-12 mx-8">
             <input
               className="bg-dark-secondary p-3 mt-8  rounded-md focus:outline-none border-2 border-dark-primary focus:border-aqua"
-              placeholder="username"
-              onChange={onUsername}
+              placeholder="deviceName"
+              onChange={onDeviceName}
             />
             <input
               className="bg-dark-secondary p-3 mt-4  rounded-md focus:outline-none border-2 border-dark-primary focus:border-aqua"

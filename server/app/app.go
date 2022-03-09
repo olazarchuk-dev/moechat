@@ -5,8 +5,8 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
-	"github.com/nekonako/moechat/app/client/controllers"
-	"github.com/nekonako/moechat/app/client/events/ws"
+	"github.com/nekonako/moechat/app/device/controllers"
+	"github.com/nekonako/moechat/app/device/events/ws"
 )
 
 func Run() {

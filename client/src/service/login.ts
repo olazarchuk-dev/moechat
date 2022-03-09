@@ -2,7 +2,7 @@ import { API_URL } from '../constants';
 import { api } from './api'
 
 type Login = { 
-  username : string,
+  deviceName : string,
   password : string
 }
 

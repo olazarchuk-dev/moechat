@@ -1,0 +1,2 @@
+INSERT INTO public.users (id, device_name, password, email, image) VALUES (2, 'Firefox', '$2a$10$cd7UEOpEYhKr56LMto3jpusF/iUb3BzYQrmNWwqUIj2ieVg7xLuDi', 'firefox@mail', '');
+INSERT INTO public.users (id, device_name, password, email, image) VALUES (3, 'Firefox-2', '$2a$10$QIZmeneqkP7Lp65L/Thf4O6RSTZ4Dyg51K1MR2ZDa3N3sQGmQZwbq', 'firefox@mail', '');

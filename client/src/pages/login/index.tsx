@@ -6,14 +6,14 @@ import Spinner from '../../component/spinner';
 
 
 export default function Login() {
-  const [username, setUsername] = useState('');
+  const [deviceName, setDeviceName] = useState('');
   const [password, setPassword] = useState('');
   const [something, setSomething] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const onUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onDeviceName = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setUsername(value);
+    setDeviceName(value);
   };
 
   const onPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,7 +27,7 @@ export default function Login() {
       setLoading(true);
 
       const user = {
-        username: username,
+        deviceName: deviceName,
         password: password,
       };
 
@@ -55,8 +55,8 @@ export default function Login() {
           <form className="flex flex-col py-12 mx-8">
             <input
               className="bg-dark-secondary p-3 mt-8  rounded-md focus:outline-none border-2 border-dark-primary focus:border-aqua"
-              placeholder="username"
-              onChange={onUsername}
+              placeholder="deviceName"
+              onChange={onDeviceName}
             />
             <input
               type="password"

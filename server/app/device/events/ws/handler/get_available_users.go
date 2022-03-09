@@ -1,31 +1,31 @@
 package handler
 
 import (
+	"fmt"
 	"github.com/gofiber/fiber/v2"
-	"github.com/nekonako/moechat/app/client/events/ws"
+	"github.com/nekonako/moechat/app/device/events/ws"
 	"github.com/nekonako/moechat/model/api"
 )
 
 type Res struct {
 	*api.BaseResponse
-	Data *[]UserList `json:"data"`
+	Data *[]Users `json:"data"`
 }
 
-type UserList struct {
-	UserId   string `json:"userId"`
-	UserName string `json:"userName"`
+type Users struct { // TODO: JoinUsers
+	Username string `json:"username"`
 }
 
 func GetAvailableUsers(ctx *fiber.Ctx, hub *ws.Hub) error {
-
-	users := make([]UserList, 0)
+	users := make([]Users, 0)
 
 	for _, user := range hub.Users {
-		users = append(users, UserList{
-			UserId:   user.UserId,
-			UserName: user.UserName,
+		fmt.Println("<<<", "Username='"+user.Username+"'")
+		users = append(users, Users{
+			Username: user.Username,
 		})
 	}
+	fmt.Println(" ...GetAvailableUsers <<<", users)
 
 	res := Res{
 		BaseResponse: &api.BaseResponse{

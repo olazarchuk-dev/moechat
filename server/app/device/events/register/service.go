@@ -3,7 +3,6 @@ package register
 import (
 	"context"
 	"database/sql"
-	"fmt"
 	"strings"
 
 	"github.com/nekonako/moechat/app/helper"
@@ -22,17 +21,16 @@ func Service(db *sql.DB, ctx context.Context, request api.RegisterRequest) *api.
 	helper.PanicErr(errHash)
 
 	user := entity.Users{
-		Username: request.Username,
-		Password: string(bytes),
-		Email:    request.Email,
-		Image:    request.Image,
+		DeviceName: request.DeviceName,
+		Password:   string(bytes),
+		Email:      request.Email,
+		Image:      request.Image,
 	}
 
 	result, errQuery := Repository(ctx, tx, user)
 	var baseResponse api.BaseResponse
 
 	if errQuery != nil {
-		fmt.Println(errQuery)
 		if strings.Contains(errQuery.Error(), "duplicate") {
 
 			baseResponse = api.BaseResponse{
@@ -68,10 +66,10 @@ func Service(db *sql.DB, ctx context.Context, request api.RegisterRequest) *api.
 	return &api.RegisterResponse{
 		BaseResponse: &baseResponse,
 		Data: &api.RegisterResponseData{
-			Id:       result.Id,
-			Username: result.Username,
-			Email:    request.Email,
-			Image:    result.Image,
+			Id:         result.Id,
+			DeviceName: result.DeviceName,
+			Email:      request.Email,
+			Image:      result.Image,
 		},
 	}
 

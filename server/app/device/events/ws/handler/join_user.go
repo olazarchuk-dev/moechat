@@ -14,7 +14,7 @@ func JoinUser(hub *ws.Hub) fiber.Handler {
 		username := conn.Params("username")
 		deviceName := conn.Query("deviceName")
 		messageState := conn.Query("messageState")
-		fmt.Println(" ...JoinUser <<<", "id='"+id+"'", "username='"+username+"'", "deviceName='"+deviceName+"'", "messageState='"+messageState+"'")
+		fmt.Println(" ...JoinUser <<<", "id='" +id+"'", "username='" + username + "'", "deviceName='" + deviceName+"'", "messageState='" + messageState+"'")
 
 		wsService := &ws.WsService{
 			Conn:       conn,

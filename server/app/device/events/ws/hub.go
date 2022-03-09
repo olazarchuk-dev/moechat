@@ -55,7 +55,7 @@ func (hub *Hub) Run() {
 				for _, wsService := range hub.Users[something.Username].WsServices {
 					if wsService.Username == something.Username {
 						wsService.Something <- something // TODO: Username, DeviceName, AppTextarea, AppRange
-						fmt.Println(" ...Hub.Broadcast something <<<", "Username='"+something.Username+"'", "DeviceName='"+something.DeviceName+"'", "AppTextarea='"+something.AppTextarea+"'", "AppRange='"+strconv.Itoa(something.AppRange)+"'")
+						fmt.Println(" ...Hub.Broadcast something <<<", "Username='" + something.Username + "'", "DeviceName='" + something.DeviceName + "'", "AppTextarea='"+something.AppTextarea+ "'", "AppRange='" + strconv.Itoa(something.AppRange) + "'")
 					}
 				}
 			}

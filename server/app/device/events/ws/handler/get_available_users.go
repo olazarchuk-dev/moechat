@@ -20,7 +20,7 @@ func GetAvailableUsers(ctx *fiber.Ctx, hub *ws.Hub) error {
 	users := make([]Users, 0)
 
 	for _, user := range hub.Users {
-		fmt.Println("<<<", "Username='"+user.Username+"'")
+		fmt.Println("<<<", "Username='" + user.Username+ "'")
 		users = append(users, Users{
 			Username: user.Username,
 		})

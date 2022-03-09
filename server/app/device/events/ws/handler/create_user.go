@@ -19,13 +19,12 @@ func CreateUser(ctx *fiber.Ctx, hub *ws.Hub) error {
 	}
 
 	hub.Users[user.Username] = &ws.User{
-		Username:   user.Username,
+		Username: user.Username,
 		WsServices: make(map[string]*ws.WsService),
 	}
-	fmt.Println(" ...CreateUser <<<", "Username='"+user.Username+"'")
+	fmt.Println(" ...CreateUser <<<", "Username='" + user.Username+ "'")
 
 	return ctx.JSON(user)
 
 }
-
 //

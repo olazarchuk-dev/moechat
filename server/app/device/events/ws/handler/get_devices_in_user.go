@@ -23,7 +23,7 @@ func GetDevicesInUser(ctx *fiber.Ctx, hub *ws.Hub) error {
 
 	var wsServices []WsServiceInUser
 	username := ctx.Params("username")
-	fmt.Println(" ...GetDevicesInUser <<<", "username='"+username+"'")
+	fmt.Println(" ...GetDevicesInUser <<<", "username='" + username + "'")
 
 	if _, isExist := hub.Users[username]; !isExist {
 		res := WsServices{
